@@ -3,6 +3,7 @@ package com.company;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -62,7 +63,7 @@ public class ParserOnlineSim {
     result = (Map<String, Map<String, String>>) gson.fromJson(resultJson, Map.class);
   }
 
-  private static String urlToString(URL url) {
+  private static @NotNull String urlToString(@NotNull URL url) {
     StringBuilder stringBuilder = new StringBuilder();
     try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))) {
       String inputLine;
