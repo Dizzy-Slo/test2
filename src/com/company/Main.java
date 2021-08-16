@@ -8,7 +8,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
         URL url = new URL("https://onlinesim.ru/price-list-data?type=receive");
         Parser parser = new Parser(url);
-        parser.ParseJSON();
-        System.out.println(parser.getResultJSON());
+        parser.setResultJson();
+        parser.writeResultJsonToFile();
+        parser.initResult();
+        parser.initResultJsonString();
+        System.out.println(parser.getResultJsonString());
     }
 }
