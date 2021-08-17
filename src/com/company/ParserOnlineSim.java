@@ -20,11 +20,10 @@ public class ParserOnlineSim {
   private static String countriesWithServicesJsonString;
   private static JsonObject countriesWithServicesJson;
 
-  private final static Pattern countryNumberRegex = Pattern.compile("[0-9]{1,4}$");
-  private final static Pattern priceRegex = Pattern.compile("^[0-9]*[,.]?[0-9]*");
-  private final static Pattern validationRegex = Pattern.compile("[0-9]*[,.]?[0-9]*.");
-
   private static URL url;
+  private static final  Pattern COUNTRY_NUMBER_REGEX = Pattern.compile("[0-9]{1,4}$");
+  private static final  Pattern PRICE_REGEX = Pattern.compile("^[0-9]*[,.]?[0-9]*");
+  private static final  Pattern VALIDATION_REGEX = Pattern.compile("[0-9]*[,.]?[0-9]*.");
 
   static {
     try {
@@ -67,7 +66,7 @@ public class ParserOnlineSim {
     JsonObject servicesPrices = getServicePricesJson(parsedJSON.get("list").getAsJsonObject());
 
     for (String country : countries.keySet()) {
-      Matcher matcher = countryNumberRegex.matcher(country);
+      Matcher matcher = COUNTRY_NUMBER_REGEX.matcher(country);
       if (matcher.find()) {
         countriesWithServicesJson.add(countries.get(country).getAsString(), servicesPrices.get(country.substring(matcher.start(), matcher.end())));
       }
@@ -89,14 +88,14 @@ public class ParserOnlineSim {
 
         JsonObject priceAndCurrency = new JsonObject();
         String servicePriceWithCurrency = servicesJson.get(countryNumber).getAsJsonObject().get(service).getAsString();
-        Matcher matcher = validationRegex.matcher(servicePriceWithCurrency);
+        Matcher matcher = VALIDATION_REGEX.matcher(servicePriceWithCurrency);
 
         if(matcher.find()){
           String validPrice = servicePriceWithCurrency.substring(matcher.start(), matcher.end());
-          matcher = priceRegex.matcher(validPrice);
+          matcher = PRICE_REGEX.matcher(validPrice);
           if(matcher.find()){
             priceAndCurrency.add("price", new JsonPrimitive(new BigDecimal(validPrice.substring(matcher.start(), matcher.end()))));
-            priceAndCurrency.add("currency", new JsonPrimitive(priceRegex.split(validPrice)[1]));
+            priceAndCurrency.add("currency", new JsonPrimitive(PRICE_REGEX.split(validPrice)[1]));
           }
         }
         tmp.add(service, priceAndCurrency);
