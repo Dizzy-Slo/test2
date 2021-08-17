@@ -131,10 +131,10 @@
 	"zenly" : 5р
 	"apteka_36_6" : 5р
 	"kuchenland" : 5р
-	"pyaterochka" : 1р
+	"pyaterochka" : 2р
 	"deliveryclub" : 25р
 	"hezzl" : 3р
-	"magnit" : 1р
+	"magnit" : 2р
 	"pof_com" : 3р
 	"kolesa_kz" : 3р
 	"premium_one" : 3р

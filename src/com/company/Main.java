@@ -1,5 +1,10 @@
 package com.company;
 
+import javafx.util.Pair;
+
+import java.math.BigDecimal;
+import java.util.Map;
+
 public class Main {
 
   public static void main(String[] args) {
@@ -7,6 +12,6 @@ public class Main {
     System.out.println(ParserOnlineSim.getCountriesWithServicesJson());
     System.out.println(ParserOnlineSim.getCountriesWithServicesJsonString());
     ParserOnlineSim.parse();
-    System.out.println(ParserOnlineSim.getCountriesWithServicesJsonString());
+    //System.out.println(ParserOnlineSim.getCountriesWithServicesJsonString());
   }
 }
