@@ -13,6 +13,7 @@ import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -21,13 +22,11 @@ import java.util.regex.Pattern;
 public class ParserOnlineSim {
   private static Map<String, Map<String, ServicePrice>> countriesWithServicesMap;
   private static String countriesWithServicesJsonString;
-  private static JsonObject countriesWithServicesJson;
 
   private static final String url = "https://onlinesim.ru/price-list-data?type=receive";
   private static final Pattern COUNTRY_NUMBER_REGEX = Pattern.compile("[0-9]{1,4}$");
   private static final Pattern PRICE_REGEX = Pattern.compile("^[0-9]*[,.]?[0-9]*");
   private static final Pattern VALIDATION_REGEX = Pattern.compile("[0-9]*[,.]?[0-9]*.");
-  private static final Type COUNTRIES_WITH_SERVICES_MAP_TYPE = TypeToken.getParameterized(Map.class, String.class, Map.class, String.class, ServicePrice.class).getType();
 
   @Nullable
   public static String getCountriesWithServicesJsonString() {
@@ -39,28 +38,24 @@ public class ParserOnlineSim {
     return countriesWithServicesMap;
   }
 
-  @Nullable
-  public static JsonObject getCountriesWithServicesJson() {
-    return countriesWithServicesJson;
-  }
-
   public static void parse() {
-    countriesWithServicesJson = new JsonObject();
     JsonObject parsedJSON = getJsonDataFromSite();
     JsonObject countries = parsedJSON.get("text").getAsJsonObject();
     JsonObject servicesPrices = getServicePricesJson(parsedJSON.get("list").getAsJsonObject());
+
+    Gson gson = new Gson();
+    countriesWithServicesMap = new HashMap<>();
+    Type mapType = TypeToken.getParameterized(Map.class, String.class, ServicePrice.class).getType();
     for (String country : countries.keySet()) {
       Matcher matcher = COUNTRY_NUMBER_REGEX.matcher(country);
       if (matcher.find()) {
-        countriesWithServicesJson.add(countries.get(country).getAsString(), servicesPrices.get(country.substring(matcher.start(), matcher.end())));
+        countriesWithServicesMap.put(countries.get(country).getAsString(), gson.fromJson(servicesPrices.get(country.substring(matcher.start(), matcher.end())), mapType));
       }
     }
 
     writeToFile();
 
-    Gson gson = new Gson();
-    countriesWithServicesMap = gson.fromJson(countriesWithServicesJson, COUNTRIES_WITH_SERVICES_MAP_TYPE);
-    countriesWithServicesJsonString = countriesWithServicesJson.toString();
+    countriesWithServicesJsonString = gson.toJson(countriesWithServicesMap);
   }
 
   @NotNull
@@ -112,19 +107,14 @@ public class ParserOnlineSim {
 
   private static void writeToFile() {
     StringBuilder stringBuilder = new StringBuilder();
-    for (String country : countriesWithServicesJson.keySet()) {
+    
+    countriesWithServicesMap.forEach((country, servicesWithPricesMap) -> {
       stringBuilder.append("\"").append(country).append("\" : {\n");
-      if (!countriesWithServicesJson.get(country).isJsonNull()) {
-        for (String serviceName : countriesWithServicesJson.get(country).getAsJsonObject().keySet()) {
-          stringBuilder.append("\t\"").append(serviceName).append("\" : ")
-            .append(countriesWithServicesJson.get(country).getAsJsonObject().get(serviceName).getAsJsonObject().get("price"))
-            .append(countriesWithServicesJson.get(country).getAsJsonObject().get(serviceName).getAsJsonObject().get("currency").getAsString()).append("\n");
-        }
-      } else {
-        stringBuilder.append("Нет опций\n");
+      if (servicesWithPricesMap != null) {
+        servicesWithPricesMap.forEach((service, priceWithCurrency) -> stringBuilder.append("\t\"").append(service).append("\" : ")
+          .append(priceWithCurrency.getPrice()).append(priceWithCurrency.getCurrency()).append("\n"));
       }
-      stringBuilder.append("},\n");
-    }
+    });
 
     try (FileWriter fileWriter = new FileWriter("Result.txt")) {
       fileWriter.write(stringBuilder.toString());

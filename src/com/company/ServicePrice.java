@@ -20,4 +20,12 @@ public class ServicePrice {
   public String getCurrency() {
     return currency;
   }
+
+  @Override
+  public String toString() {
+    return ":{" +
+      "\"price\":" + price +
+      ", \"currency\":" + currency +
+      '}';
+  }
 }
