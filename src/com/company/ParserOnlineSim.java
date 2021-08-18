@@ -20,7 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ParserOnlineSim {
-  private static Map<String, Map<String, Pair<BigDecimal, String>>> countriesWithServicesMap;
+  private static Map<String, Map<String, ServicePrice>> countriesWithServicesMap;
   private static String countriesWithServicesJsonString;
   private static JsonObject countriesWithServicesJson;
 
@@ -28,7 +28,7 @@ public class ParserOnlineSim {
   private static final Pattern COUNTRY_NUMBER_REGEX = Pattern.compile("[0-9]{1,4}$");
   private static final Pattern PRICE_REGEX = Pattern.compile("^[0-9]*[,.]?[0-9]*");
   private static final Pattern VALIDATION_REGEX = Pattern.compile("[0-9]*[,.]?[0-9]*.");
-  private static final Type COUNTRIES_WITH_SERVICES_MAP_TYPE = TypeToken.getParameterized(Map.class, String.class, Map.class, String.class, Pair.class, BigDecimal.class, String.class).getType();
+  private static final Type COUNTRIES_WITH_SERVICES_MAP_TYPE = TypeToken.getParameterized(Map.class, String.class, Map.class, String.class, ServicePrice.class).getType();
 
   @Nullable
   public static String getCountriesWithServicesJsonString() {
@@ -36,7 +36,7 @@ public class ParserOnlineSim {
   }
 
   @Nullable
-  public static Map<String, Map<String, Pair<BigDecimal, String>>> getCountriesWithServicesMap() {
+  public static Map<String, Map<String, ServicePrice>> getCountriesWithServicesMap() {
     return countriesWithServicesMap;
   }
 
