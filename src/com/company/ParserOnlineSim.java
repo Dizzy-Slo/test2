@@ -45,11 +45,11 @@ public class ParserOnlineSim {
 
     Gson gson = new Gson();
     countriesWithServicesMap = new HashMap<>();
-    Type mapType = TypeToken.getParameterized(Map.class, String.class, ServicePrice.class).getType();
+    Type countriesWithServicesMapType = TypeToken.getParameterized(Map.class, String.class, ServicePrice.class).getType();
     for (String country : countries.keySet()) {
       Matcher matcher = COUNTRY_NUMBER_REGEX.matcher(country);
       if (matcher.find()) {
-        countriesWithServicesMap.put(countries.get(country).getAsString(), gson.fromJson(servicesPrices.get(country.substring(matcher.start(), matcher.end())), mapType));
+        countriesWithServicesMap.put(countries.get(country).getAsString(), gson.fromJson(servicesPrices.get(country.substring(matcher.start(), matcher.end())), countriesWithServicesMapType));
       }
     }
 
