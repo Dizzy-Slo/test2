@@ -4,27 +4,36 @@ import com.google.gson.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ParserOnlineSim {
   private static Map<String, Map<String, ServicePrice>> countriesWithServicesMap;
   private static String countriesWithServicesJsonString;
+  private static Logger logger;
 
   private static final String url = "https://onlinesim.ru/price-list-data?type=receive";
   private static final Pattern PRICE_REGEX = Pattern.compile("^[0-9]*[,.]?[0-9]*");
   private static final Pattern VALIDATION_REGEX = Pattern.compile("[0-9]*[,.]?[0-9]*.");
 
+  static {
+    try(FileInputStream ins = new FileInputStream("src/com/company/LogConfig.config")){
+      LogManager.getLogManager().readConfiguration(ins);
+      logger = Logger.getLogger(Main.class.getName());
+    }catch (Exception e){
+      e.printStackTrace();
+    }
+  }
   @Nullable
   public static String getCountriesWithServicesJsonString() {
     return countriesWithServicesJsonString;
@@ -84,7 +93,7 @@ public class ParserOnlineSim {
     try {
       onlineSimURL = new URL(url);
     } catch (MalformedURLException e) {
-      e.printStackTrace();
+      logger.log(Level.WARNING, "Invalid URL format", e);
     }
     JsonParser jsonParser = new JsonParser();
     StringBuilder stringBuilder = new StringBuilder();
@@ -95,7 +104,7 @@ public class ParserOnlineSim {
         stringBuilder.append(inputLine);
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.log(Level.WARNING, "Something wrong", e);
     }
     return jsonParser.parse(stringBuilder.toString()).getAsJsonObject();
   }
@@ -115,7 +124,7 @@ public class ParserOnlineSim {
       fileWriter.write(stringBuilder.toString());
       fileWriter.flush();
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.log(Level.WARNING, "Write to file failed", e);
     }
   }
 }
