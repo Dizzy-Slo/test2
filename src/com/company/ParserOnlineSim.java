@@ -27,13 +27,14 @@ public class ParserOnlineSim {
   private static final Pattern VALIDATION_REGEX = Pattern.compile("[0-9]*[,.]?[0-9]*.");
 
   static {
-    try(FileInputStream ins = new FileInputStream("src/com/company/LogConfig.config")){
+    try (FileInputStream ins = new FileInputStream("src/com/company/LogConfig.config")) {
       LogManager.getLogManager().readConfiguration(ins);
-      logger = Logger.getLogger(Main.class.getName());
-    }catch (Exception e){
+      logger = Logger.getLogger(ParserOnlineSim.class.getName());
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
+
   @Nullable
   public static String getCountriesWithServicesJsonString() {
     return countriesWithServicesJsonString;
