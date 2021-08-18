@@ -3,10 +3,10 @@ package com.company;
 import java.math.BigDecimal;
 
 public class ServicePrice {
-  private BigDecimal price;
-  private String currency;
+  private final BigDecimal price;
+  private final String currency;
 
-  public ServicePrice(BigDecimal price, String currency){
+  public ServicePrice(BigDecimal price, String currency) {
     this.price = price;
     this.currency = currency;
   }

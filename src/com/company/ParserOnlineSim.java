@@ -79,8 +79,8 @@ public class ParserOnlineSim {
           String validPrice = servicePriceWithCurrency.substring(matcher.start(), matcher.end());
           matcher = PRICE_REGEX.matcher(validPrice);
           if (matcher.find()) {
-            priceAndCurrency.add("price", new JsonPrimitive(new BigDecimal(validPrice.substring(matcher.start(), matcher.end()))));
-            priceAndCurrency.add("currency", new JsonPrimitive(PRICE_REGEX.split(validPrice)[1]));
+            priceAndCurrency.addProperty("price", new BigDecimal(validPrice.substring(matcher.start(), matcher.end())));
+            priceAndCurrency.addProperty("currency", PRICE_REGEX.split(validPrice)[1]);
           }
         }
         tmp.add(service, priceAndCurrency);
