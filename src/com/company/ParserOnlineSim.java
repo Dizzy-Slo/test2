@@ -2,7 +2,6 @@ package com.company;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import javafx.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
