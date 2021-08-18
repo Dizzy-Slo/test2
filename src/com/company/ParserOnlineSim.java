@@ -54,7 +54,6 @@ public class ParserOnlineSim {
     }
 
     writeToFile();
-
     countriesWithServicesJsonString = gson.toJson(countriesWithServicesMap);
   }
 
@@ -107,7 +106,7 @@ public class ParserOnlineSim {
 
   private static void writeToFile() {
     StringBuilder stringBuilder = new StringBuilder();
-    
+
     countriesWithServicesMap.forEach((country, servicesWithPricesMap) -> {
       stringBuilder.append("\"").append(country).append("\" : {\n");
       if (servicesWithPricesMap != null) {
