@@ -20,13 +20,13 @@ public class MainPageController {
   @FXML
   private void findServices() {
     if (Objects.requireNonNull(ParserOnlineSim.getCountriesWithServicesMap()).containsKey(countryTextField.getText())) {
-      servicesComboBox.setItems(null);
+      servicesComboBox.getItems().remove(0, servicesComboBox.getItems().size());
       for (String s : ParserOnlineSim.getCountriesWithServicesMap().get(countryTextField.getText()).keySet()) {
         servicesComboBox.getItems().add(new Service(s, ParserOnlineSim.getCountriesWithServicesMap().get(countryTextField.getText()).get(s)));
       }
       servicesComboBox.setValue(servicesComboBox.getItems().get(0));
     } else {
-      servicesComboBox.setItems(null);
+      servicesComboBox.getItems().remove(0, servicesComboBox.getItems().size());
     }
   }
 }
