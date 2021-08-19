@@ -22,6 +22,6 @@ public class Service {
   @Override
   public String toString() {
     return name + " " +
-      price.getPrice().toString()+price.getCurrency();
+      price.getPrice().toString() + price.getCurrency();
   }
 }

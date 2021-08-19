@@ -16,12 +16,11 @@ public class MainPageController {
 
   public void findServices() {
     if (Objects.requireNonNull(ParserOnlineSim.getCountriesWithServicesMap()).containsKey(countryTextField.getText())) {
-      for (String s : ParserOnlineSim.getCountriesWithServicesMap().get(countryTextField.getText()).keySet()){
+      for (String s : ParserOnlineSim.getCountriesWithServicesMap().get(countryTextField.getText()).keySet()) {
         servicesComboBox.getItems().add(new Service(s, ParserOnlineSim.getCountriesWithServicesMap().get(countryTextField.getText()).get(s)));
       }
       servicesComboBox.setValue(servicesComboBox.getItems().get(0));
-    }
-    else {
+    } else {
       servicesComboBox.setItems(null);
     }
   }
