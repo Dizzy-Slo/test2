@@ -4,9 +4,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Label?>
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.company.MainPageController">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.company.MainPageController">
     <Label text="Введите страну:"/>
     <TextField fx:id="countryTextField" onAction="#findServices"/>
     <Label text="Сервисы:"/>
