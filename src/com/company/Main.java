@@ -1,11 +1,23 @@
 package com.company;
 
-public class Main {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class Main extends Application {
 
   public static void main(String[] args) {
-    System.out.println(ParserOnlineSim.getCountriesWithServicesMap());
-    System.out.println(ParserOnlineSim.getCountriesWithServicesJsonString());
     ParserOnlineSim.parse();
-    System.out.println(ParserOnlineSim.getCountriesWithServicesJsonString());
+    Application.launch(args);
+  }
+
+  @Override
+  public void start(Stage primaryStage) throws Exception {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("MainPage.fxml"));
+    primaryStage.setScene(new Scene(loader.load()));
+    primaryStage.setMinHeight(300);
+    primaryStage.setMinWidth(500);
+    primaryStage.show();
   }
 }
