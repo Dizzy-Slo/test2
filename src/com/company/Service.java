@@ -1,10 +1,12 @@
 package com.company;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Service {
   private final String name;
   private final ServicePrice price;
 
-  public Service(String name, ServicePrice price) {
+  public Service(@NotNull String name, @NotNull ServicePrice price) {
     this.name = name;
     this.price = price;
   }
