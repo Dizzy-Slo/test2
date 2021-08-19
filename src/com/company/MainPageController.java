@@ -3,6 +3,8 @@ package com.company;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
+import java.util.Objects;
+
 public class MainPageController {
   public TextField countryTextField;
   public ComboBox<Service> servicesComboBox;
@@ -13,7 +15,7 @@ public class MainPageController {
   }
 
   public void findServices() {
-    if (ParserOnlineSim.getCountriesWithServicesMap().containsKey(countryTextField.getText())) {
+    if (Objects.requireNonNull(ParserOnlineSim.getCountriesWithServicesMap()).containsKey(countryTextField.getText())) {
       for (String s : ParserOnlineSim.getCountriesWithServicesMap().get(countryTextField.getText()).keySet()){
         servicesComboBox.getItems().add(new Service(s, ParserOnlineSim.getCountriesWithServicesMap().get(countryTextField.getText()).get(s)));
       }
