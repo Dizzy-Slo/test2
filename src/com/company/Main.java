@@ -5,11 +5,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.logging.Level;
+
 public class Main extends Application {
 
-  public static void main(String[] args) {
-    ParserOnlineSim.parse();
-    Application.launch(args);
+  public static void main(String[] args) throws Exception {
+    if (ParserOnlineSim.parse(false) == null) {
+      ParserOnlineSim.getLogger().log(Level.WARNING, "Can't parse OnlineSim");
+      return;
+    }
+    Application.launch();
   }
 
   @Override
@@ -17,7 +22,7 @@ public class Main extends Application {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("MainPage.fxml"));
     primaryStage.setScene(new Scene(loader.load()));
     primaryStage.setMinHeight(300);
-    primaryStage.setMinWidth(500);
+    primaryStage.setMinWidth(300);
     primaryStage.show();
   }
 }

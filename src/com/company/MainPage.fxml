@@ -1,12 +1,43 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.company.MainPageController">
-    <Label text="Введите страну:"/>
-    <TextField fx:id="countryTextField" onAction="#findServices"/>
-    <Label text="Сервисы:"/>
-    <ComboBox fx:id="servicesComboBox"/>
-</VBox>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<TilePane hgap="15" orientation="VERTICAL" prefHeight="227.0" prefWidth="268.0" vgap="20"
+          xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.company.MainPageController">
+    <HBox spacing="10">
+        <padding>
+            <Insets left="10.0" top="10.0"/>
+        </padding>
+        <Label text="Введите страну:">
+            <HBox.margin>
+                <Insets top="4.0"/>
+            </HBox.margin>
+        </Label>
+        <TextField fx:id="countryTextField" maxWidth="150" onAction="#getServices">
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+        </TextField>
+    </HBox>
+    <HBox spacing="10.0">
+        <padding>
+            <Insets left="10"/>
+        </padding>
+        <Label text="Сервисы:">
+            <HBox.margin>
+                <Insets top="4.0"/>
+            </HBox.margin>
+        </Label>
+        <ComboBox fx:id="servicesComboBox">
+            <HBox.margin>
+                <Insets left="35.0"/>
+            </HBox.margin>
+        </ComboBox>
+        <TilePane.margin>
+            <Insets/>
+        </TilePane.margin>
+    </HBox>
+    <Button onAction="#findServices" prefHeight="3.0" prefWidth="128.0" text="Загрузить данные"/>
+</TilePane>

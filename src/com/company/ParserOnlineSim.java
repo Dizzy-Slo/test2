@@ -1,14 +1,17 @@
 package com.company;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -21,16 +24,19 @@ public class ParserOnlineSim {
   private static Logger logger;
 
   private static final String url = "https://onlinesim.ru/price-list-data?type=receive";
-  private static final Pattern PRICE_REGEX = Pattern.compile("^[0-9]*[,.]?[0-9]*");
-  private static final Pattern VALIDATION_REGEX = Pattern.compile("[0-9]*[,.]?[0-9]*.");
+  private static final Pattern VALIDATION_REGEX = Pattern.compile("(?<price>\\d+)(?<currency>\\D)");
 
   static {
-    try (FileInputStream ins = new FileInputStream("src/com/company/LogConfig.config")) {
-      LogManager.getLogManager().readConfiguration(ins);
+    try (FileInputStream inputStream = new FileInputStream("src/com/company/LogConfig.config")) {
+      LogManager.getLogManager().readConfiguration(inputStream);
       logger = Logger.getLogger(ParserOnlineSim.class.getName());
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  public static Logger getLogger() {
+    return logger;
   }
 
   @Nullable
@@ -43,15 +49,17 @@ public class ParserOnlineSim {
     return countriesWithServicesMap;
   }
 
-  public static void parse() {
+  @Nullable
+  public static Map<String, Map<String, ServicePrice>> parse(boolean saveToFile) throws Exception {
     JsonObject parsedJSON = getJsonDataFromSite();
 
     countriesWithServicesMap = getCountriesWithServicesMapFromJson(parsedJSON.get("list").getAsJsonObject(),
       parsedJSON.get("text").getAsJsonObject());
 
-    Gson gson = new Gson();
-    writeToFile();
-    countriesWithServicesJsonString = gson.toJson(countriesWithServicesMap);
+    if (saveToFile) writeToFile();
+
+    countriesWithServicesJsonString = new Gson().toJson(countriesWithServicesMap);
+    return countriesWithServicesMap;
   }
 
   @NotNull
@@ -59,53 +67,37 @@ public class ParserOnlineSim {
                                                                                             @NotNull JsonObject countriesJson) {
     Map<String, Map<String, ServicePrice>> countriesWithServicesMap = new HashMap<>();
     for (String countryNumber : countriesJson.keySet()) {
-      Map<String, ServicePrice> tmp = new HashMap<>();
-      if (servicesJson.get(countryNumber.replaceAll("country_", "")) != null) {
+      Map<String, ServicePrice> servicePriceMap = new HashMap<>();
+      JsonElement country = servicesJson.get(countryNumber.replaceAll("country_", ""));
 
-        for (String service : servicesJson.get(countryNumber.replaceAll("country_", "")).getAsJsonObject().keySet()) {
-          String servicePriceWithCurrency = servicesJson.get(countryNumber.replaceAll("country_", ""))
-            .getAsJsonObject().get(service).getAsString();
+      if (country != null) {
+        JsonObject servicePrice = country.getAsJsonObject();
+
+        for (String service : servicePrice.keySet()) {
+          String servicePriceWithCurrency = servicePrice.get(service).getAsString();
 
           Matcher matcher = VALIDATION_REGEX.matcher(servicePriceWithCurrency);
-
           if (matcher.find()) {
-            String validPrice = servicePriceWithCurrency.substring(matcher.start(), matcher.end());
-            matcher = PRICE_REGEX.matcher(validPrice);
-
-            if (matcher.find()) {
-              ServicePrice priceAndCurrency = new ServicePrice(new BigDecimal(validPrice.substring(matcher.start(), matcher.end())),
-                PRICE_REGEX.split(validPrice)[1]);
-
-              tmp.put(service, priceAndCurrency);
-            }
+            ServicePrice priceAndCurrency = new ServicePrice(new BigDecimal(matcher.group("price")), matcher.group("currency"));
+            servicePriceMap.put(service, priceAndCurrency);
           }
         }
       }
-      countriesWithServicesMap.put(countriesJson.get(countryNumber).getAsString(), tmp);
+      countriesWithServicesMap.put(countriesJson.get(countryNumber).getAsString(), servicePriceMap);
     }
     return countriesWithServicesMap;
   }
 
   @NotNull
-  private static JsonObject getJsonDataFromSite() {
-    URL onlineSimURL = null;
-    try {
-      onlineSimURL = new URL(url);
-    } catch (MalformedURLException e) {
-      logger.log(Level.WARNING, "Invalid URL format", e);
-    }
-    JsonParser jsonParser = new JsonParser();
+  private static JsonObject getJsonDataFromSite() throws Exception {
     StringBuilder stringBuilder = new StringBuilder();
-    try (BufferedReader in = new BufferedReader(new InputStreamReader(Objects.requireNonNull(onlineSimURL,
-      "No connection").openStream()))) {
+    try (BufferedReader in = new BufferedReader(new InputStreamReader(new URL(url).openStream()))) {
       String inputLine;
       while ((inputLine = in.readLine()) != null) {
         stringBuilder.append(inputLine);
       }
-    } catch (IOException e) {
-      logger.log(Level.WARNING, "Something wrong", e);
     }
-    return jsonParser.parse(stringBuilder.toString()).getAsJsonObject();
+    return new JsonParser().parse(stringBuilder.toString()).getAsJsonObject();
   }
 
   private static void writeToFile() {
