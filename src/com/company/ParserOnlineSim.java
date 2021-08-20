@@ -59,7 +59,7 @@ public class ParserOnlineSim {
     if (saveToFile) writeToFile();
 
     countriesWithServicesJsonString = new Gson().toJson(countriesWithServicesMap);
-    return countriesWithServicesMap;
+    return null;
   }
 
   @NotNull
