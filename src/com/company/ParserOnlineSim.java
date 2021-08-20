@@ -91,9 +91,9 @@ public class ParserOnlineSim {
   @NotNull
   private static JsonObject getJsonDataFromSite() throws Exception {
     StringBuilder stringBuilder = new StringBuilder();
-    try (BufferedReader in = new BufferedReader(new InputStreamReader(new URL(url).openStream()))) {
+    try (BufferedReader input = new BufferedReader(new InputStreamReader(new URL(url).openStream()))) {
       String inputLine;
-      while ((inputLine = in.readLine()) != null) {
+      while ((inputLine = input.readLine()) != null) {
         stringBuilder.append(inputLine);
       }
     }
