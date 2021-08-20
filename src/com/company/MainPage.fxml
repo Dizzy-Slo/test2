@@ -15,11 +15,7 @@
                 <Insets top="4.0"/>
             </HBox.margin>
         </Label>
-        <TextField fx:id="countryTextField" maxWidth="150" onAction="#getServices">
-            <HBox.margin>
-                <Insets/>
-            </HBox.margin>
-        </TextField>
+        <TextField fx:id="countryTextField" maxWidth="150" onAction="#getServices"/>
     </HBox>
     <HBox spacing="10.0">
         <padding>
@@ -35,9 +31,6 @@
                 <Insets left="35.0"/>
             </HBox.margin>
         </ComboBox>
-        <TilePane.margin>
-            <Insets/>
-        </TilePane.margin>
     </HBox>
-    <Button onAction="#findServices" prefHeight="3.0" prefWidth="128.0" text="Загрузить данные"/>
+    <Button onAction="#findServices" prefHeight="3.0" prefWidth="128.0" text="Обновить данные"/>
 </TilePane>
