@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -116,6 +117,7 @@ public class ParserOnlineSim {
       fileWriter.flush();
     } catch (IOException e) {
       logger.log(Level.WARNING, "Write to file failed", e);
+      AlertShower.showErrorAlert("Не удалось записать в файл", Arrays.toString(e.getStackTrace()));
     }
   }
 }

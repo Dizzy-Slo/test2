@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 
-public class ServicePrice {
+public class ServicePrice implements Comparable<ServicePrice> {
   private final BigDecimal price;
   private final String currency;
 
@@ -27,5 +27,10 @@ public class ServicePrice {
       "\"price\":" + price +
       ", \"currency\":" + currency +
       '}';
+  }
+
+  @Override
+  public int compareTo(@NotNull ServicePrice o) {
+    return price.compareTo(o.price);
   }
 }
