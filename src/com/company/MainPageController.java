@@ -35,6 +35,8 @@ public class MainPageController {
   private Map<String, Map<String, ServicePrice>> countriesWithServicesMapSortedByPriceDesc;
   private Map<String, Map<String, ServicePrice>> currentSortedCountriesWithServicesMap;
 
+  private CurrentSort currentSort;
+
   @FXML
   private void initialize() throws Exception {
     initializeSortedMap(ParserOnlineSim.parse(false));
@@ -100,7 +102,6 @@ public class MainPageController {
     }
   }
 
-  @FXML
   private void changeCurrentSort(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
     currentSortedCountriesWithServicesMap = countriesWithServicesMap;
     getServices();
