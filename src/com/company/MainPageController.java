@@ -28,11 +28,15 @@ public class MainPageController {
   @FXML
   private RadioButton priceDescRadioButton;
 
-  private Map<String, Map<String, ServicePrice>> countriesWithServicesPriceMap;
+  private Map<String, Map<String, ServicePrice>> countriesWithServicesMapSortedByNameAsc;
+  private Map<String, Map<String, ServicePrice>> countriesWithServicesMapSortedByNameDesc;
+  private Map<String, Map<String, ServicePrice>> countriesWithServicesMapSortedByPriceAsc;
+  private Map<String, Map<String, ServicePrice>> countriesWithServicesMapSortedByPriceDesc;
+  private Map<String, Map<String, ServicePrice>> currentSortedCountriesWithServicesMap;
 
   @FXML
   private void initialize() throws Exception {
-    countriesWithServicesPriceMap = ParserOnlineSim.parse(false);
+    initializeSortedMap(ParserOnlineSim.parse(false));
 
     ToggleGroup sort = new ToggleGroup();
     nameAscRadioButton.setToggleGroup(sort);
@@ -43,22 +47,23 @@ public class MainPageController {
     sort.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
       switch (newValue.getUserData().toString()) {
         case "nameAsc": {
-          sortServicesByName(true);
+          changeCurrentSort(countriesWithServicesMapSortedByNameAsc);
           return;
         }
         case "nameDesc": {
-          sortServicesByName(false);
+          changeCurrentSort(countriesWithServicesMapSortedByNameDesc);
           return;
         }
         case "priceAsc": {
-          sortServicesByPrice(true);
+          changeCurrentSort(countriesWithServicesMapSortedByPriceAsc);
           return;
         }
         case "priceDesc": {
-          sortServicesByPrice(false);
+          changeCurrentSort(countriesWithServicesMapSortedByPriceDesc);
         }
       }
     });
+    nameAscRadioButton.fire();
   }
 
   @FXML
@@ -66,7 +71,7 @@ public class MainPageController {
     updateButton.setDisable(true);
     findProgressBar.setVisible(true);
 
-    countriesWithServicesPriceMap = ParserOnlineSim.parse(false);
+    initializeSortedMap(ParserOnlineSim.parse(false));
     AlertShower.showWaitingAlert("Обновление прошло успешно");
 
     findProgressBar.setVisible(false);
@@ -74,11 +79,11 @@ public class MainPageController {
   }
 
   @FXML
-  private void getServices() {
+  private void getServices(){
     servicesComboBox.getItems().clear();
     String inputCountry = findEqualCountryFromMap(countryTextField.getText().trim());
     if (inputCountry != null) {
-      Map<String, ServicePrice> servicePriceMap = countriesWithServicesPriceMap.get(inputCountry);
+      Map<String, ServicePrice> servicePriceMap = currentSortedCountriesWithServicesMap.get(inputCountry);
       for (String service : servicePriceMap.keySet()) {
         servicesComboBox.getItems().add(new Service(service, servicePriceMap.get(service)));
       }
@@ -86,9 +91,15 @@ public class MainPageController {
     }
   }
 
+  @FXML
+  private void changeCurrentSort(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
+    currentSortedCountriesWithServicesMap = countriesWithServicesMap;
+    getServices();
+  }
+
   @Nullable
   private String findEqualCountryFromMap(@NotNull String inputCountry) {
-    for (String country : countriesWithServicesPriceMap.keySet()) {
+    for (String country : countriesWithServicesMapSortedByNameAsc.keySet()) {
       if (country.equalsIgnoreCase(inputCountry)) {
         return country;
       }
@@ -96,22 +107,41 @@ public class MainPageController {
     return null;
   }
 
-  private void sortServicesByPrice(boolean ascSort) {
+  private void initializeSortedMap(Map<String, Map<String, ServicePrice>> countriesWithServicesPriceMap){
+    countriesWithServicesMapSortedByNameAsc = sortServicesByName(true, countriesWithServicesPriceMap);
+    countriesWithServicesMapSortedByNameDesc = sortServicesByName(false, countriesWithServicesPriceMap);
+    countriesWithServicesMapSortedByPriceAsc = sortServicesByPrice(true, countriesWithServicesPriceMap);
+    countriesWithServicesMapSortedByPriceDesc = sortServicesByPrice(false, countriesWithServicesPriceMap);
+    currentSortedCountriesWithServicesMap = countriesWithServicesMapSortedByNameAsc;
+  }
+
+  @NotNull
+  private Map<String, Map<String, ServicePrice>> sortServicesByPrice(boolean ascSort,
+                                                                     @NotNull Map<String, Map<String, ServicePrice>> countriesWithServicesPriceMap) {
+    Map<String, Map<String, ServicePrice>> countriesWithServicesMap = new LinkedHashMap<>();
     for (String country : countriesWithServicesPriceMap.keySet()) {
       Map<String, ServicePrice> sortedServicesMap = new LinkedHashMap<>();
       if (ascSort) {
-        countriesWithServicesPriceMap.get(country).entrySet().stream()
-          .sorted(Map.Entry.comparingByValue()).forEach(e -> sortedServicesMap.put(e.getKey(), e.getValue()));
+        countriesWithServicesPriceMap.get(country)
+          .entrySet()
+          .stream()
+          .sorted(Map.Entry.comparingByValue())
+          .forEach(serviceWithPriceEntry -> sortedServicesMap.put(serviceWithPriceEntry.getKey(), serviceWithPriceEntry.getValue()));
       } else {
-        countriesWithServicesPriceMap.get(country).entrySet().stream()
-          .sorted(Map.Entry.comparingByValue(Collections.reverseOrder())).forEach(e -> sortedServicesMap.put(e.getKey(), e.getValue()));
+        countriesWithServicesPriceMap.get(country)
+          .entrySet()
+          .stream()
+          .sorted(Map.Entry.comparingByValue(Collections.reverseOrder()))
+          .forEach(e -> sortedServicesMap.put(e.getKey(), e.getValue()));
       }
-      countriesWithServicesPriceMap.replace(country, sortedServicesMap);
+      countriesWithServicesMap.put(country, sortedServicesMap);
     }
-    getServices();
+    return countriesWithServicesMap;
   }
-
-  private void sortServicesByName(boolean ascSort) {
+  @NotNull
+  private Map<String, Map<String, ServicePrice>> sortServicesByName(boolean ascSort,
+                                                                    @NotNull Map<String, Map<String, ServicePrice>> countriesWithServicesPriceMap) {
+    Map<String, Map<String, ServicePrice>> countriesWithServicesMap = new LinkedHashMap<>();
     for (String country : countriesWithServicesPriceMap.keySet()) {
       Map<String, ServicePrice> sortedServicesMap;
       if (ascSort) {
@@ -120,9 +150,9 @@ public class MainPageController {
         sortedServicesMap = new TreeMap<>(Collections.reverseOrder());
         sortedServicesMap.putAll(countriesWithServicesPriceMap.get(country));
       }
-      countriesWithServicesPriceMap.replace(country, sortedServicesMap);
+      countriesWithServicesMap.put(country, sortedServicesMap);
     }
-    getServices();
+    return countriesWithServicesMap;
   }
 }
 

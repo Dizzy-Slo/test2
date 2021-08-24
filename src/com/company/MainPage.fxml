@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<FlowPane hgap="15" orientation="VERTICAL" vgap="20"
-          xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.company.MainPageController">
+
+<FlowPane hgap="15" orientation="VERTICAL" vgap="20" xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml" fx:controller="com.company.MainPageController">
     <padding>
-        <Insets topRightBottomLeft="10"/>
+        <Insets topRightBottomLeft="10" />
     </padding>
     <HBox spacing="10">
         <Label text="Введите страну:">
             <HBox.margin>
-                <Insets top="4.0"/>
+                <Insets top="4.0" />
             </HBox.margin>
         </Label>
-        <TextField fx:id="countryTextField" maxWidth="150" onAction="#getServices"/>
+        <TextField fx:id="countryTextField" maxWidth="150" onAction="#getServices" />
     </HBox>
     <HBox spacing="10.0">
         <Label text="Сервисы:">
             <HBox.margin>
-                <Insets top="4.0"/>
+                <Insets top="4.0" />
             </HBox.margin>
         </Label>
-        <ComboBox fx:id="servicesComboBox">
+        <ComboBox fx:id="servicesComboBox" prefWidth="150.0">
             <HBox.margin>
-                <Insets left="35.0"/>
+                <Insets left="35.0" />
             </HBox.margin>
         </ComboBox>
     </HBox>
-    <Button fx:id="updateButton" onAction="#findServices" prefHeight="3.0" prefWidth="128.0" text="Обновить данные"/>
-    <ProgressBar fx:id="findProgressBar" visible="false"/>
+    <Button fx:id="updateButton" onAction="#findServices" prefHeight="3.0" prefWidth="128.0" text="Обновить данные" />
+    <ProgressBar fx:id="findProgressBar" visible="false" />
     <VBox>
-        <RadioButton fx:id="nameAscRadioButton" userData="nameAsc" text="Отсортировать сервисы по названию по возрастанию"/>
-        <RadioButton fx:id="nameDescRadioButton" userData="nameDesc" text="Отсортировать сервисы по названию по убыванию"/>
-        <RadioButton fx:id="priceAscRadioButton" userData="priceAsc" text="Отсортировать сервисы по цене по возрастанию"/>
-        <RadioButton fx:id="priceDescRadioButton" userData="priceDesc" text="Отсортировать сервисы по цене по убыванию"/>
+        <RadioButton fx:id="nameAscRadioButton" text="Отсортировать сервисы по названию ↑" userData="nameAsc" />
+        <RadioButton fx:id="nameDescRadioButton" text="Отсортировать сервисы по названию ↓" userData="nameDesc" />
+        <RadioButton fx:id="priceAscRadioButton" text="Отсортировать сервисы по цене ↑" userData="priceAsc" />
+        <RadioButton fx:id="priceDescRadioButton" text="Отсортировать сервисы по цене ↓" userData="priceDesc" />
     </VBox>
 </FlowPane>

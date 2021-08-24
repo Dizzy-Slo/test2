@@ -22,3 +22,9 @@ WARNING: Failed to parse OnlineSim
 WARNING: Failed to parse OnlineSim
 авг 22, 2021 10:51:47 AM com.company.Main start
 WARNING: Failed to parse OnlineSim
+авг 24, 2021 9:48:27 AM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
+авг 24, 2021 9:49:43 AM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
+авг 24, 2021 9:55:16 AM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301

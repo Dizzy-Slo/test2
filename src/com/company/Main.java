@@ -22,9 +22,9 @@ public class Main extends Application {
       } else {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MainPage.fxml"));
         primaryStage.setScene(new Scene(loader.load()));
-        primaryStage.setMinHeight(300);
-        primaryStage.setMinWidth(300);
-        primaryStage.setResizable(false);
+        //primaryStage.setMinHeight(300);
+        //primaryStage.setMinWidth(300);
+        //primaryStage.setResizable(false);
         primaryStage.show();
       }
     } catch (Exception e) {
