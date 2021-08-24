@@ -85,6 +85,7 @@ public class MainPageController {
     findProgressBar.progressProperty().bind(initializeSortedMapsTask.progressProperty());
 
     new Thread(initializeSortedMapsTask).start();
+    nameAscRadioButton.fire();
   }
 
   @FXML
