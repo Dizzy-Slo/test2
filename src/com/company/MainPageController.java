@@ -1,5 +1,6 @@
 package com.company;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.jetbrains.annotations.NotNull;
@@ -67,19 +68,27 @@ public class MainPageController {
   }
 
   @FXML
-  private void findServices() throws Exception {
-    updateButton.setDisable(true);
-    findProgressBar.setVisible(true);
+  private void updateCountriesWithServicesMap() {
+    Task<Void> initializeSortedMapsTask = new Task<Void>() {
+      @Override
+      protected Void call() throws Exception {
+        updateButton.setDisable(true);
+        findProgressBar.setVisible(true);
 
-    initializeSortedMap(ParserOnlineSim.parse(false));
-    AlertShower.showWaitingAlert("Обновление прошло успешно");
+        initializeSortedMap(ParserOnlineSim.parse(false));
 
-    findProgressBar.setVisible(false);
-    updateButton.setDisable(false);
+        findProgressBar.setVisible(false);
+        updateButton.setDisable(false);
+        return null;
+      }
+    };
+    findProgressBar.progressProperty().bind(initializeSortedMapsTask.progressProperty());
+
+    new Thread(initializeSortedMapsTask).start();
   }
 
   @FXML
-  private void getServices(){
+  private void getServices() {
     servicesComboBox.getItems().clear();
     String inputCountry = findEqualCountryFromMap(countryTextField.getText().trim());
     if (inputCountry != null) {
@@ -97,9 +106,17 @@ public class MainPageController {
     getServices();
   }
 
+  private void initializeSortedMap(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
+    countriesWithServicesMapSortedByNameAsc = sortServicesByName(true, countriesWithServicesMap);
+    countriesWithServicesMapSortedByNameDesc = sortServicesByName(false, countriesWithServicesMap);
+    countriesWithServicesMapSortedByPriceAsc = sortServicesByPrice(true, countriesWithServicesMap);
+    countriesWithServicesMapSortedByPriceDesc = sortServicesByPrice(false, countriesWithServicesMap);
+    currentSortedCountriesWithServicesMap = countriesWithServicesMapSortedByNameAsc;
+  }
+
   @Nullable
   private String findEqualCountryFromMap(@NotNull String inputCountry) {
-    for (String country : countriesWithServicesMapSortedByNameAsc.keySet()) {
+    for (String country : currentSortedCountriesWithServicesMap.keySet()) {
       if (country.equalsIgnoreCase(inputCountry)) {
         return country;
       }
@@ -107,52 +124,45 @@ public class MainPageController {
     return null;
   }
 
-  private void initializeSortedMap(Map<String, Map<String, ServicePrice>> countriesWithServicesPriceMap){
-    countriesWithServicesMapSortedByNameAsc = sortServicesByName(true, countriesWithServicesPriceMap);
-    countriesWithServicesMapSortedByNameDesc = sortServicesByName(false, countriesWithServicesPriceMap);
-    countriesWithServicesMapSortedByPriceAsc = sortServicesByPrice(true, countriesWithServicesPriceMap);
-    countriesWithServicesMapSortedByPriceDesc = sortServicesByPrice(false, countriesWithServicesPriceMap);
-    currentSortedCountriesWithServicesMap = countriesWithServicesMapSortedByNameAsc;
-  }
-
   @NotNull
   private Map<String, Map<String, ServicePrice>> sortServicesByPrice(boolean ascSort,
-                                                                     @NotNull Map<String, Map<String, ServicePrice>> countriesWithServicesPriceMap) {
-    Map<String, Map<String, ServicePrice>> countriesWithServicesMap = new LinkedHashMap<>();
-    for (String country : countriesWithServicesPriceMap.keySet()) {
+                                                                     @NotNull Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
+    Map<String, Map<String, ServicePrice>> sortedCountriesWithServicesMap = new LinkedHashMap<>();
+    for (String country : countriesWithServicesMap.keySet()) {
       Map<String, ServicePrice> sortedServicesMap = new LinkedHashMap<>();
       if (ascSort) {
-        countriesWithServicesPriceMap.get(country)
+        countriesWithServicesMap.get(country)
           .entrySet()
           .stream()
           .sorted(Map.Entry.comparingByValue())
           .forEach(serviceWithPriceEntry -> sortedServicesMap.put(serviceWithPriceEntry.getKey(), serviceWithPriceEntry.getValue()));
       } else {
-        countriesWithServicesPriceMap.get(country)
+        countriesWithServicesMap.get(country)
           .entrySet()
           .stream()
           .sorted(Map.Entry.comparingByValue(Collections.reverseOrder()))
           .forEach(e -> sortedServicesMap.put(e.getKey(), e.getValue()));
       }
-      countriesWithServicesMap.put(country, sortedServicesMap);
+      sortedCountriesWithServicesMap.put(country, sortedServicesMap);
     }
-    return countriesWithServicesMap;
+    return sortedCountriesWithServicesMap;
   }
+
   @NotNull
   private Map<String, Map<String, ServicePrice>> sortServicesByName(boolean ascSort,
-                                                                    @NotNull Map<String, Map<String, ServicePrice>> countriesWithServicesPriceMap) {
-    Map<String, Map<String, ServicePrice>> countriesWithServicesMap = new LinkedHashMap<>();
-    for (String country : countriesWithServicesPriceMap.keySet()) {
+                                                                    @NotNull Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
+    Map<String, Map<String, ServicePrice>> sortedCountriesWithServicesMap = new LinkedHashMap<>();
+    for (String country : countriesWithServicesMap.keySet()) {
       Map<String, ServicePrice> sortedServicesMap;
       if (ascSort) {
-        sortedServicesMap = new TreeMap<>(countriesWithServicesPriceMap.get(country));
+        sortedServicesMap = new TreeMap<>(countriesWithServicesMap.get(country));
       } else {
         sortedServicesMap = new TreeMap<>(Collections.reverseOrder());
-        sortedServicesMap.putAll(countriesWithServicesPriceMap.get(country));
+        sortedServicesMap.putAll(countriesWithServicesMap.get(country));
       }
-      countriesWithServicesMap.put(country, sortedServicesMap);
+      sortedCountriesWithServicesMap.put(country, sortedServicesMap);
     }
-    return countriesWithServicesMap;
+    return sortedCountriesWithServicesMap;
   }
 }
 
