@@ -90,13 +90,14 @@ public class MainPageController {
         return null;
       }
     };
-    findProgressBar.progressProperty().bind(initializeSortedMapsTask.progressProperty());
 
     initializeSortedMapsTask.setOnSucceeded(event -> {
       getServices();
       nameAscRadioButton.fire();
       nameAscRadioButton.requestFocus();
     });
+
+    findProgressBar.progressProperty().bind(initializeSortedMapsTask.progressProperty());
     new Thread(initializeSortedMapsTask).start();
   }
 
@@ -126,7 +127,7 @@ public class MainPageController {
       } catch (DataFormatException e) {
         AlertShower.showErrorAlert("Неправильное значение", "Введите корректное значение в поле");
       }
-      sortServiceByPrice(currentSortedCountriesWithServicesMap);
+      sortServicesByPrice(currentSortedCountriesWithServicesMap);
 
       getServices();
       servicesComboBox.setValue(service);
@@ -139,17 +140,17 @@ public class MainPageController {
   }
 
   private void initializeSortedMap(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
-    sortServiceByName(countriesWithServicesMap);
-    sortServiceByPrice(countriesWithServicesMap);
+    sortServicesByName(countriesWithServicesMap);
+    sortServicesByPrice(countriesWithServicesMap);
     currentSortedCountriesWithServicesMap = countriesWithServicesMapSortedByNameAsc;
   }
 
-  private void sortServiceByPrice(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
+  private void sortServicesByPrice(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
     countriesWithServicesMapSortedByPriceAsc = sortServicesByPrice(true, countriesWithServicesMap);
     countriesWithServicesMapSortedByPriceDesc = sortServicesByPrice(false, countriesWithServicesMap);
   }
 
-  private void sortServiceByName(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
+  private void sortServicesByName(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
     countriesWithServicesMapSortedByNameAsc = sortServicesByName(true, countriesWithServicesMap);
     countriesWithServicesMapSortedByNameDesc = sortServicesByName(false, countriesWithServicesMap);
   }
