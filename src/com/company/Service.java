@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.zip.DataFormatException;
 
 public class Service {
-  private ServicePrice price;
+  private final ServicePrice price;
   private final String name;
 
   public Service(@NotNull String name, @NotNull ServicePrice price) {

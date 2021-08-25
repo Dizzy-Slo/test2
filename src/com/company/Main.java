@@ -22,7 +22,7 @@ public class Main extends Application {
       } else {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MainPage.fxml"));
         primaryStage.setScene(new Scene(loader.load()));
-        //primaryStage.setResizable(false);
+        primaryStage.setResizable(false);
         primaryStage.show();
       }
     } catch (Exception e) {
