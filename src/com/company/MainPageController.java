@@ -175,7 +175,7 @@ public class MainPageController {
           .entrySet()
           .stream()
           .sorted(Map.Entry.comparingByValue(Collections.reverseOrder()))
-          .forEach(e -> sortedServicesMap.put(e.getKey(), e.getValue()));
+          .forEach(serviceWithPriceEntry -> sortedServicesMap.put(serviceWithPriceEntry.getKey(), serviceWithPriceEntry.getValue()));
       }
       sortedCountriesWithServicesMap.put(country, sortedServicesMap);
     }
