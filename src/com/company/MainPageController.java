@@ -6,14 +6,15 @@ import javafx.scene.control.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.zip.DataFormatException;
 
 public class MainPageController {
   @FXML
   private TextField countryTextField;
+  @FXML
+  private TextField setPriceTextField;
   @FXML
   private ComboBox<Service> servicesComboBox;
   @FXML
@@ -65,6 +66,12 @@ public class MainPageController {
       }
     });
     nameAscRadioButton.fire();
+
+    setPriceTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+      if (!newValue.matches("\\d*[.]?\\d*")) {
+        setPriceTextField.setText(newValue.replaceAll("[^\\d]$", ""));
+      }
+    });
   }
 
   @FXML
@@ -90,14 +97,33 @@ public class MainPageController {
 
   @FXML
   private void getServices() {
-    servicesComboBox.getItems().clear();
+    List<Service> servicesList = servicesComboBox.getItems();
+    servicesList.clear();
+
     String inputCountry = findEqualCountryFromMap(countryTextField.getText().trim());
     if (inputCountry != null) {
       Map<String, ServicePrice> servicePriceMap = currentSortedCountriesWithServicesMap.get(inputCountry);
       for (String service : servicePriceMap.keySet()) {
-        servicesComboBox.getItems().add(new Service(service, servicePriceMap.get(service)));
+        servicesList.add(new Service(service, servicePriceMap.get(service)));
       }
-      servicesComboBox.setValue(servicesComboBox.getItems().get(0));
+      servicesComboBox.setValue(servicesList.get(0));
+    }
+  }
+
+  @FXML
+  private void setPrice() {
+    Service service = servicesComboBox.getValue();
+    String newPrice = setPriceTextField.getText();
+
+    if (service != null && !newPrice.isEmpty()) {
+      try {
+        service.setPrice(new BigDecimal(newPrice));
+      } catch (DataFormatException e) {
+        AlertShower.showErrorAlert("Неправильное значение", "Введите корректное значение в поле");
+      }
+      sortServiceByPrice(currentSortedCountriesWithServicesMap);
+      getServices();
+      servicesComboBox.setValue(service);
     }
   }
 
@@ -107,11 +133,19 @@ public class MainPageController {
   }
 
   private void initializeSortedMap(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
-    countriesWithServicesMapSortedByNameAsc = sortServicesByName(true, countriesWithServicesMap);
-    countriesWithServicesMapSortedByNameDesc = sortServicesByName(false, countriesWithServicesMap);
+    sortServiceByName(countriesWithServicesMap);
+    sortServiceByPrice(countriesWithServicesMap);
+    currentSortedCountriesWithServicesMap = countriesWithServicesMapSortedByNameAsc;
+  }
+
+  private void sortServiceByPrice(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
     countriesWithServicesMapSortedByPriceAsc = sortServicesByPrice(true, countriesWithServicesMap);
     countriesWithServicesMapSortedByPriceDesc = sortServicesByPrice(false, countriesWithServicesMap);
-    currentSortedCountriesWithServicesMap = countriesWithServicesMapSortedByNameAsc;
+  }
+
+  private void sortServiceByName(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
+    countriesWithServicesMapSortedByNameAsc = sortServicesByName(true, countriesWithServicesMap);
+    countriesWithServicesMapSortedByNameDesc = sortServicesByName(false, countriesWithServicesMap);
   }
 
   @Nullable

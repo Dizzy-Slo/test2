@@ -60,3 +60,5 @@ WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runti
 WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
 авг 24, 2021 2:15:40 PM javafx.fxml.FXMLLoader$ValueElement processValue
 WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
+авг 25, 2021 8:56:07 AM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301

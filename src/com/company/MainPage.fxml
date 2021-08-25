@@ -3,7 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane prefHeight="245.0" prefWidth="266.0" xmlns="http://javafx.com/javafx"
+<AnchorPane prefHeight="308.0" prefWidth="326.0" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml" fx:controller="com.company.MainPageController">
     <padding>
         <Insets topRightBottomLeft="10"/>
@@ -36,7 +36,7 @@
                 prefHeight="25.0" prefWidth="128.0" text="Обновить данные"/>
         <ProgressBar fx:id="findProgressBar" prefHeight="18.0" prefWidth="107.0" visible="false"/>
     </HBox>
-    <VBox spacing="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="145.0">
+    <VBox spacing="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="200.0">
         <HBox spacing="10">
             <Label minHeight="17.0" minWidth="212.0" text="Отсортировать сервисы по названию:"/>
             <RadioButton fx:id="nameAscRadioButton" text="↑" userData="nameAsc"/>
@@ -48,4 +48,11 @@
             <RadioButton fx:id="priceDescRadioButton" text="↓" userData="priceDesc"/>
         </HBox>
     </VBox>
+    <HBox alignment="TOP_CENTER" spacing="25.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
+          AnchorPane.topAnchor="150.0">
+        <Button onAction="#setPrice" layoutX="20.0" layoutY="156.0" mnemonicParsing="false" prefHeight="25.0"
+                prefWidth="128.0" text="Изменить цену"/>
+        <TextField fx:id="setPriceTextField" layoutX="171.0" layoutY="156.0" prefHeight="25.0" prefWidth="135.0"
+                   promptText="Введите цену"/>
+    </HBox>
 </AnchorPane>
