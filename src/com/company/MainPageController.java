@@ -69,7 +69,7 @@ public class MainPageController {
     nameAscRadioButton.fire();
 
     setPriceTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-      if (!newValue.matches("\\d*[.]?\\d*")) {
+      if (!newValue.matches("\\d+[.]?\\d*")) {
         setPriceTextField.setText(newValue.replaceAll("[^\\d]$", ""));
       }
     });
