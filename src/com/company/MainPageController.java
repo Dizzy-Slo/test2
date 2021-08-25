@@ -36,11 +36,12 @@ public class MainPageController {
   private Map<String, Map<String, ServicePrice>> countriesWithServicesMapSortedByPriceDesc;
   private Map<String, Map<String, ServicePrice>> currentSortedCountriesWithServicesMap;
 
+  ToggleGroup sort = new ToggleGroup();
+
   @FXML
   private void initialize() throws Exception {
     initializeSortedMap(ParserOnlineSim.parse(false));
 
-    ToggleGroup sort = new ToggleGroup();
     nameAscRadioButton.setToggleGroup(sort);
     nameDescRadioButton.setToggleGroup(sort);
     priceAscRadioButton.setToggleGroup(sort);
@@ -91,16 +92,20 @@ public class MainPageController {
     };
     findProgressBar.progressProperty().bind(initializeSortedMapsTask.progressProperty());
 
+    initializeSortedMapsTask.setOnSucceeded(event -> {
+      getServices();
+      nameAscRadioButton.fire();
+      nameAscRadioButton.requestFocus();
+    });
     new Thread(initializeSortedMapsTask).start();
-    nameAscRadioButton.fire();
   }
 
   @FXML
   private void getServices() {
-    List<Service> servicesList = servicesComboBox.getItems();
-    servicesList.clear();
-
     String inputCountry = findEqualCountryFromMap(countryTextField.getText().trim());
+    List<Service> servicesList = servicesComboBox.getItems();
+
+    servicesList.clear();
     if (inputCountry != null) {
       Map<String, ServicePrice> servicePriceMap = currentSortedCountriesWithServicesMap.get(inputCountry);
       for (String service : servicePriceMap.keySet()) {
@@ -122,6 +127,7 @@ public class MainPageController {
         AlertShower.showErrorAlert("Неправильное значение", "Введите корректное значение в поле");
       }
       sortServiceByPrice(currentSortedCountriesWithServicesMap);
+
       getServices();
       servicesComboBox.setValue(service);
     }
