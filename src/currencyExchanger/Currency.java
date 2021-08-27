@@ -1,4 +1,4 @@
-package com.company;
+package currencyExchanger;
 
 public enum Currency {
 
