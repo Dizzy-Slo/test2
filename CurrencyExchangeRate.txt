@@ -1,0 +1,7 @@
+{
+    "timestamp": 1630074141,
+    "source": RUB,
+    "quotes": {
+        "RUBUSD": 0.014,
+    }
+}

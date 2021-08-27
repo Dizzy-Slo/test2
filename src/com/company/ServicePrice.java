@@ -40,11 +40,10 @@ public class ServicePrice implements Comparable<ServicePrice> {
 
   @Override
   public int compareTo(@NotNull ServicePrice o) {
-    //todo вывод ошибки при разных валютах
     if(currency.equals(o.currency)){
       return price.compareTo(o.price);
     }else {
-      return -10;
+      return CurrencyExchanger.comparingCurrency(price, o.price);
     }
   }
 }

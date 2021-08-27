@@ -15,7 +15,6 @@
                                    prefWidth="228.0"/>
                 <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity"
                                    prefWidth="228.0"/>
-                <ColumnConstraints/>
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER"
