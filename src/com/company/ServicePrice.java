@@ -22,7 +22,7 @@ public class ServicePrice implements Comparable<ServicePrice> {
     return currency;
   }
 
-  public void setPrice(BigDecimal newPrice) throws DataFormatException {
+  public void setPrice(@NotNull BigDecimal newPrice) throws DataFormatException {
     if (BigDecimal.ZERO.compareTo(newPrice) < 0) {
       price = newPrice;
     } else {
@@ -40,6 +40,11 @@ public class ServicePrice implements Comparable<ServicePrice> {
 
   @Override
   public int compareTo(@NotNull ServicePrice o) {
-    return price.compareTo(o.price);
+    //todo вывод ошибки при разных валютах
+    if(currency.equals(o.currency)){
+      return price.compareTo(o.price);
+    }else {
+      return -10;
+    }
   }
 }

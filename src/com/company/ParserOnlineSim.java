@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -66,9 +67,9 @@ public class ParserOnlineSim {
   @NotNull
   private static Map<String, Map<String, ServicePrice>> getCountriesWithServicesMapFromJson(@NotNull JsonObject servicesJson,
                                                                                             @NotNull JsonObject countriesJson) {
-    Map<String, Map<String, ServicePrice>> countriesWithServicesMap = new HashMap<>();
+    Map<String, Map<String, ServicePrice>> countriesWithServicesMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     for (String countryNumber : countriesJson.keySet()) {
-      Map<String, ServicePrice> servicePriceMap = new HashMap<>();
+      Map<String, ServicePrice> servicePriceMap = new TreeMap<>();
       JsonElement country = servicesJson.get(countryNumber.replaceAll("country_", ""));
 
       if (country != null) {

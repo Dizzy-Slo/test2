@@ -1,5 +1,6 @@
 package com.company;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -18,6 +19,8 @@ public class MainPageController {
   @FXML
   private ComboBox<Service> servicesComboBox;
   @FXML
+  private ComboBox<String> countriesComboBox;
+  @FXML
   private ProgressBar findProgressBar;
   @FXML
   private Button updateButton;
@@ -30,17 +33,15 @@ public class MainPageController {
   @FXML
   private RadioButton priceDescRadioButton;
 
-  private Map<String, Map<String, ServicePrice>> countriesWithServicesMapSortedByNameAsc;
-  private Map<String, Map<String, ServicePrice>> countriesWithServicesMapSortedByNameDesc;
-  private Map<String, Map<String, ServicePrice>> countriesWithServicesMapSortedByPriceAsc;
-  private Map<String, Map<String, ServicePrice>> countriesWithServicesMapSortedByPriceDesc;
+  private String currentCountry;
   private Map<String, Map<String, ServicePrice>> currentSortedCountriesWithServicesMap;
-
-  ToggleGroup sort = new ToggleGroup();
+  private final ToggleGroup sort = new ToggleGroup();
 
   @FXML
   private void initialize() throws Exception {
-    initializeSortedMap(ParserOnlineSim.parse(false));
+    currentSortedCountriesWithServicesMap = ParserOnlineSim.parse(false);
+
+    countriesComboBox.getItems().addAll(currentSortedCountriesWithServicesMap.keySet());
 
     nameAscRadioButton.setToggleGroup(sort);
     nameDescRadioButton.setToggleGroup(sort);
@@ -48,31 +49,45 @@ public class MainPageController {
     priceDescRadioButton.setToggleGroup(sort);
 
     sort.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-      switch (newValue.getUserData().toString()) {
-        case "nameAsc": {
-          changeCurrentSort(countriesWithServicesMapSortedByNameAsc);
-          return;
-        }
-        case "nameDesc": {
-          changeCurrentSort(countriesWithServicesMapSortedByNameDesc);
-          return;
-        }
-        case "priceAsc": {
-          changeCurrentSort(countriesWithServicesMapSortedByPriceAsc);
-          return;
-        }
-        case "priceDesc": {
-          changeCurrentSort(countriesWithServicesMapSortedByPriceDesc);
+      if (currentCountry != null) {
+        switch (newValue.getUserData().toString()) {
+          case "nameAsc": {
+            changeCurrentSort(currentCountry, true, true);
+            return;
+          }
+          case "nameDesc": {
+            changeCurrentSort(currentCountry, true, false);
+            return;
+          }
+          case "priceAsc": {
+            changeCurrentSort(currentCountry, false, true);
+            return;
+          }
+          case "priceDesc": {
+            changeCurrentSort(currentCountry, false, false);
+          }
         }
       }
     });
-    nameAscRadioButton.fire();
 
     setPriceTextField.textProperty().addListener((observable, oldValue, newValue) -> {
       if (!newValue.matches("\\d+[.]?\\d*")) {
         setPriceTextField.setText(newValue.replaceAll("[^\\d]$", ""));
       }
     });
+
+    countryTextField.setOnAction((event) -> {
+      String inputCountry = findEqualCountryFromMap(countryTextField.getText().trim());
+      if (inputCountry != null) {
+        changeCurrentCountry(inputCountry, true);
+      }
+    });
+
+    countriesComboBox.setOnAction((event) -> changeCurrentCountry(countriesComboBox.getValue(), false));
+
+    servicesComboBox.setOnAction((event) ->
+      Platform.runLater(() ->
+        setPriceTextField.setText(servicesComboBox.getValue().getServicePrice().getPrice().toString())));
   }
 
   @FXML
@@ -83,35 +98,39 @@ public class MainPageController {
         updateButton.setDisable(true);
         findProgressBar.setVisible(true);
 
-        initializeSortedMap(ParserOnlineSim.parse(false));
+        currentSortedCountriesWithServicesMap = ParserOnlineSim.parse(false);
 
         findProgressBar.setVisible(false);
         updateButton.setDisable(false);
+
+        Platform.runLater(() -> {
+          nameAscRadioButton.fire();
+          nameAscRadioButton.requestFocus();
+        });
         return null;
       }
     };
-
-    initializeSortedMapsTask.setOnSucceeded(event -> {
-      getServices();
-      nameAscRadioButton.fire();
-      nameAscRadioButton.requestFocus();
-    });
 
     findProgressBar.progressProperty().bind(initializeSortedMapsTask.progressProperty());
     new Thread(initializeSortedMapsTask).start();
   }
 
   @FXML
-  private void getServices() {
-    String inputCountry = findEqualCountryFromMap(countryTextField.getText().trim());
+  private void setServicesComboBox(boolean ascSort) {
     List<Service> servicesList = servicesComboBox.getItems();
 
-    servicesList.clear();
-    if (inputCountry != null) {
-      Map<String, ServicePrice> servicePriceMap = currentSortedCountriesWithServicesMap.get(inputCountry);
-      for (String service : servicePriceMap.keySet()) {
+    if (currentCountry != null) {
+      servicesList.clear();
+      Map<String, ServicePrice> servicePriceMap = currentSortedCountriesWithServicesMap.get(currentCountry);
+      List<String> services = new LinkedList<>(servicePriceMap.keySet());
+
+      if (!ascSort) {
+        Collections.reverse(services);
+      }
+      for (String service : services) {
         servicesList.add(new Service(service, servicePriceMap.get(service)));
       }
+
       servicesComboBox.setValue(servicesList.get(0));
     }
   }
@@ -122,88 +141,79 @@ public class MainPageController {
     String newPrice = setPriceTextField.getText();
 
     if (service != null && !newPrice.isEmpty()) {
-      try {
-        service.setPrice(new BigDecimal(newPrice));
-      } catch (DataFormatException e) {
-        AlertShower.showErrorAlert("Неправильное значение", "Введите корректное значение в поле");
+      if (AlertShower.showChangeAlert(service.getName(), service.getServicePrice().getPrice().toString(), newPrice)) {
+        List<Service> services = servicesComboBox.getItems();
+        int index = services.indexOf(service);
+
+        try {
+          service.setPrice(new BigDecimal(newPrice));
+          services.remove(index);
+          services.add(index, service);
+
+          servicesComboBox.setValue(service);
+        } catch (DataFormatException e) {
+          AlertShower.showErrorAlert("Неправильное значение", "Введите корректное значение в поле");
+        }
       }
-      sortServicesByPrice(currentSortedCountriesWithServicesMap);
-
-      getServices();
-      servicesComboBox.setValue(service);
     }
-  }
-
-  private void changeCurrentSort(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
-    currentSortedCountriesWithServicesMap = countriesWithServicesMap;
-    getServices();
-  }
-
-  private void initializeSortedMap(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
-    sortServicesByName(countriesWithServicesMap);
-    sortServicesByPrice(countriesWithServicesMap);
-    currentSortedCountriesWithServicesMap = countriesWithServicesMapSortedByNameAsc;
-  }
-
-  private void sortServicesByPrice(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
-    countriesWithServicesMapSortedByPriceAsc = sortServicesByPrice(true, countriesWithServicesMap);
-    countriesWithServicesMapSortedByPriceDesc = sortServicesByPrice(false, countriesWithServicesMap);
-  }
-
-  private void sortServicesByName(Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
-    countriesWithServicesMapSortedByNameAsc = sortServicesByName(true, countriesWithServicesMap);
-    countriesWithServicesMapSortedByNameDesc = sortServicesByName(false, countriesWithServicesMap);
   }
 
   @Nullable
   private String findEqualCountryFromMap(@NotNull String inputCountry) {
-    for (String country : currentSortedCountriesWithServicesMap.keySet()) {
-      if (country.equalsIgnoreCase(inputCountry)) {
-        return country;
-      }
+    if (currentSortedCountriesWithServicesMap.containsKey(inputCountry)) {
+      return inputCountry;
+    } else {
+      return null;
     }
-    return null;
   }
 
-  @NotNull
-  private Map<String, Map<String, ServicePrice>> sortServicesByPrice(boolean ascSort,
-                                                                     @NotNull Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
-    Map<String, Map<String, ServicePrice>> sortedCountriesWithServicesMap = new LinkedHashMap<>();
-    for (String country : countriesWithServicesMap.keySet()) {
-      Map<String, ServicePrice> sortedServicesMap = new LinkedHashMap<>();
-      if (ascSort) {
-        countriesWithServicesMap.get(country)
-          .entrySet()
-          .stream()
-          .sorted(Map.Entry.comparingByValue())
-          .forEach(serviceWithPriceEntry -> sortedServicesMap.put(serviceWithPriceEntry.getKey(), serviceWithPriceEntry.getValue()));
-      } else {
-        countriesWithServicesMap.get(country)
-          .entrySet()
-          .stream()
-          .sorted(Map.Entry.comparingByValue(Collections.reverseOrder()))
-          .forEach(serviceWithPriceEntry -> sortedServicesMap.put(serviceWithPriceEntry.getKey(), serviceWithPriceEntry.getValue()));
-      }
-      sortedCountriesWithServicesMap.put(country, sortedServicesMap);
+  private void changeCurrentCountry(@NotNull String inputCountry, boolean fromTextField) {
+    currentCountry = inputCountry;
+
+    if (fromTextField) {
+      countriesComboBox.setValue(currentCountry);
+    } else {
+      countryTextField.setText(currentCountry);
     }
-    return sortedCountriesWithServicesMap;
+
+    if (nameAscRadioButton.isSelected()) {
+      setServicesComboBox(true);
+    } else {
+      nameAscRadioButton.fire();
+    }
   }
 
-  @NotNull
-  private Map<String, Map<String, ServicePrice>> sortServicesByName(boolean ascSort,
-                                                                    @NotNull Map<String, Map<String, ServicePrice>> countriesWithServicesMap) {
-    Map<String, Map<String, ServicePrice>> sortedCountriesWithServicesMap = new LinkedHashMap<>();
-    for (String country : countriesWithServicesMap.keySet()) {
-      Map<String, ServicePrice> sortedServicesMap;
-      if (ascSort) {
-        sortedServicesMap = new TreeMap<>(countriesWithServicesMap.get(country));
-      } else {
-        sortedServicesMap = new TreeMap<>(Collections.reverseOrder());
-        sortedServicesMap.putAll(countriesWithServicesMap.get(country));
-      }
-      sortedCountriesWithServicesMap.put(country, sortedServicesMap);
+  private void changeCurrentSort(@NotNull String inputCountry, boolean byName, boolean ascSort) {
+    if (byName) {
+      sortCountryServicesByName(inputCountry);
+    } else {
+      sortCountryServicesByPrice(inputCountry);
     }
-    return sortedCountriesWithServicesMap;
+    setServicesComboBox(ascSort);
+  }
+
+  private void sortCountryServicesByPrice(@NotNull String inputCountry) {
+    Map<String, ServicePrice> sortedServicesMap = new LinkedHashMap<>();
+    currentSortedCountriesWithServicesMap.get(inputCountry)
+      .entrySet()
+      .stream()
+      .sorted(Map.Entry.comparingByValue())
+      .forEach(serviceWithPriceEntry -> sortedServicesMap.put(serviceWithPriceEntry.getKey(), serviceWithPriceEntry.getValue()));
+
+    currentSortedCountriesWithServicesMap.remove(inputCountry);
+    currentSortedCountriesWithServicesMap.put(inputCountry, sortedServicesMap);
+  }
+
+  private void sortCountryServicesByName(@NotNull String inputCountry) {
+    Map<String, ServicePrice> sortedServicesMap = new LinkedHashMap<>();
+    currentSortedCountriesWithServicesMap.get(inputCountry)
+      .entrySet()
+      .stream()
+      .sorted(Map.Entry.comparingByKey())
+      .forEach(serviceWithPriceEntry -> sortedServicesMap.put(serviceWithPriceEntry.getKey(), serviceWithPriceEntry.getValue()));
+
+    currentSortedCountriesWithServicesMap.remove(inputCountry);
+    currentSortedCountriesWithServicesMap.put(inputCountry, sortedServicesMap);
   }
 }
 
