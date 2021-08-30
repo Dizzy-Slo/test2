@@ -10,11 +10,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class TablePageController {
   public TableColumn<Service, String> nameCol;
@@ -44,7 +46,7 @@ public class TablePageController {
     countriesComboBox.setOnAction(event -> getServicesByCountry());
 
     mainViewButton.setOnAction(event -> {
-      ((Node)(event.getSource())).getScene().getWindow().hide();
+      ((Node) (event.getSource())).getScene().getWindow().hide();
       FXMLLoader loader = new FXMLLoader(getClass().getResource("MainPage.fxml"));
       Stage tableStage = new Stage();
       try {
