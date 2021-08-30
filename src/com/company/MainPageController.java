@@ -3,10 +3,15 @@ package com.company;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.zip.DataFormatException;
@@ -25,6 +30,8 @@ public class MainPageController {
   @FXML
   private Button updateButton;
   @FXML
+  private Button tableViewButton;
+  @FXML
   private RadioButton nameAscRadioButton;
   @FXML
   private RadioButton nameDescRadioButton;
@@ -38,8 +45,8 @@ public class MainPageController {
   private final ToggleGroup sort = new ToggleGroup();
 
   @FXML
-  private void initialize() throws Exception {
-    currentSortedCountriesWithServicesMap = ParserOnlineSim.parse(false);
+  private void initialize() {
+    currentSortedCountriesWithServicesMap = Main.getParsedCountriesWithServicesMap();
 
     countriesComboBox.getItems().addAll(currentSortedCountriesWithServicesMap.keySet());
 
@@ -88,6 +95,18 @@ public class MainPageController {
     servicesComboBox.setOnAction((event) ->
       Platform.runLater(() ->
         setPriceTextField.setText(servicesComboBox.getValue().getServicePrice().getPrice().toString())));
+
+    tableViewButton.setOnAction(event -> {
+      ((Node) (event.getSource())).getScene().getWindow().hide();
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("TablePage.fxml"));
+      Stage tableStage = new Stage();
+      try {
+        tableStage.setScene(new Scene(loader.load()));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      tableStage.show();
+    });
   }
 
   @FXML
@@ -146,13 +165,13 @@ public class MainPageController {
         int index = services.indexOf(service);
 
         try {
-          service.setPrice(new BigDecimal(newPrice));
+          service.setServicePrice(new BigDecimal(newPrice));
           services.remove(index);
           services.add(index, service);
 
           servicesComboBox.setValue(service);
         } catch (DataFormatException e) {
-          AlertShower.showErrorAlert("Неправильное значение", "Введите корректное значение в поле");
+          AlertShower.showErrorAlert("Неправильное значение", "Введите корректное значение в поле", false);
         }
       }
     }

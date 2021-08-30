@@ -6,7 +6,7 @@
 <BorderPane prefHeight="310.0" prefWidth="496.0" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml" fx:controller="com.company.MainPageController">
     <padding>
-        <Insets topRightBottomLeft="10"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
     <center>
         <GridPane alignment="CENTER_LEFT" prefHeight="311.0" prefWidth="419.0" BorderPane.alignment="CENTER_LEFT">
@@ -30,13 +30,10 @@
                 <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER"
                                 vgrow="SOMETIMES"/>
             </rowConstraints>
-            <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-            </padding>
             <Label text="Введите страну:"/>
             <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1">
-                <TextField fx:id="countryTextField" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                           prefWidth="99.0" HBox.hgrow="ALWAYS">
+                <TextField fx:id="countryTextField" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="99.0"
+                           HBox.hgrow="ALWAYS">
                     <HBox.margin>
                         <Insets right="10.0"/>
                     </HBox.margin>
@@ -48,9 +45,8 @@
             <ComboBox fx:id="servicesComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
                       GridPane.rowIndex="1"/>
 
-            <Button fx:id="updateButton" onAction="#updateCountriesWithServicesMap"
-                    maxWidth="1.7976931348623157E308" text="Обновить данные"
-                    GridPane.rowIndex="2">
+            <Button fx:id="updateButton" maxWidth="1.7976931348623157E308" onAction="#updateCountriesWithServicesMap"
+                    text="Обновить данные" GridPane.rowIndex="2">
                 <GridPane.margin>
                     <Insets right="10.0"/>
                 </GridPane.margin>
@@ -58,14 +54,13 @@
             <ProgressBar fx:id="findProgressBar" maxWidth="1.7976931348623157E308" visible="false"
                          GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-            <Button maxWidth="1.7976931348623157E308" onAction="#setPrice" text="Изменить цену"
-                    GridPane.rowIndex="3">
+            <Button maxWidth="1.7976931348623157E308" onAction="#setPrice" text="Изменить цену" GridPane.rowIndex="3">
                 <GridPane.margin>
                     <Insets right="10.0"/>
                 </GridPane.margin>
             </Button>
-            <TextField fx:id="setPriceTextField" onAction="#setPrice" promptText="Введите цену"
-                       GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <TextField fx:id="setPriceTextField" onAction="#setPrice" promptText="Введите цену" GridPane.columnIndex="1"
+                       GridPane.rowIndex="3"/>
 
             <Label text="Отсортировать сервисы по названию:" GridPane.rowIndex="4">
                 <GridPane.margin>
@@ -88,4 +83,12 @@
             </HBox>
         </GridPane>
     </center>
+    <bottom>
+        <Button fx:id="tableViewButton" minHeight="-Infinity" minWidth="-Infinity"
+                text="Открыть табличное представление">
+            <BorderPane.margin>
+                <Insets top="10.0"/>
+            </BorderPane.margin>
+        </Button>
+    </bottom>
 </BorderPane>

@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class AlertShower {
-  public static void showErrorAlert(@NotNull String message, @Nullable String description) {
+  public static void showErrorAlert(@NotNull String message, @Nullable String description, boolean closeApp) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setTitle("Error");
     alert.setHeaderText(message);
@@ -28,7 +28,17 @@ public class AlertShower {
       alert.getDialogPane().setContent(alertDescriptionVBox);
     }
 
-    alert.showAndWait();
+    if (closeApp) {
+      ButtonType accept = new ButtonType("Окей");
+      alert.getButtonTypes().clear();
+      alert.getButtonTypes().addAll(accept);
+      Optional<ButtonType> option = alert.showAndWait();
+      if (option.filter(buttonType -> buttonType == accept).isPresent()) {
+        System.exit(0);
+      }
+    } else {
+      alert.showAndWait();
+    }
   }
 
   public static boolean showChangeAlert(@NotNull String field, @NotNull String oldValue, @NotNull String newValue) {
@@ -54,13 +64,5 @@ public class AlertShower {
 
     Optional<ButtonType> option = alert.showAndWait();
     return option.filter(buttonType -> buttonType == accept).isPresent();
-  }
-
-  public static void showWaitingAlert(@NotNull String message) {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-    alert.setTitle("Info");
-    alert.setHeaderText(message);
-
-    alert.show();
   }
 }

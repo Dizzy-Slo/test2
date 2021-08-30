@@ -1,18 +1,22 @@
 package com.company;
 
+import currencyExchanger.Currency;
 import currencyExchanger.CurrencyExchanger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.zip.DataFormatException;
 
 public class ServicePrice implements Comparable<ServicePrice> {
   private BigDecimal price;
+  private final Currency currency1;
   private final String currency;
 
   public ServicePrice(@NotNull BigDecimal price, @NotNull String currency) {
     this.price = price;
     this.currency = currency;
+    this.currency1 = Currency.getBySymbol(currency);
   }
 
   public BigDecimal getPrice() {
@@ -21,6 +25,11 @@ public class ServicePrice implements Comparable<ServicePrice> {
 
   public String getCurrency() {
     return currency;
+  }
+
+  @Nullable
+  public Currency getCurrency1() {
+    return currency1;
   }
 
   public void setPrice(@NotNull BigDecimal newPrice) throws DataFormatException {
@@ -33,10 +42,7 @@ public class ServicePrice implements Comparable<ServicePrice> {
 
   @Override
   public String toString() {
-    return ":{" +
-      "\"price\":" + price +
-      ", \"currency\":" + currency +
-      '}';
+    return price + currency;
   }
 
   @Override
@@ -44,7 +50,7 @@ public class ServicePrice implements Comparable<ServicePrice> {
     if(currency.equals(o.currency)){
       return price.compareTo(o.price);
     }else {
-      return CurrencyExchanger.comparingCurrency(price, o.price);
+      return CurrencyExchanger.comparingCurrency(this, o);
     }
   }
 }

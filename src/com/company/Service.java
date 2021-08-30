@@ -7,13 +7,13 @@ import java.util.Random;
 import java.util.zip.DataFormatException;
 
 public class Service {
-  private final ServicePrice price;
+  private final ServicePrice servicePrice;
   private final String name;
   private int quantity;
 
   public Service(@NotNull String name, @NotNull ServicePrice price) {
     this.name = name;
-    this.price = price;
+    this.servicePrice = price;
 
     Random random = new Random();
     quantity = random.nextInt(5000);
@@ -24,7 +24,7 @@ public class Service {
   }
 
   public ServicePrice getServicePrice() {
-    return price;
+    return servicePrice;
   }
 
   public int getQuantity() {
@@ -37,15 +37,15 @@ public class Service {
     }
   }
 
-  public void setPrice(@NotNull BigDecimal newPrice) throws DataFormatException {
-    price.setPrice(newPrice);
+  public void setServicePrice(@NotNull BigDecimal newPrice) throws DataFormatException {
+    servicePrice.setPrice(newPrice);
   }
 
   @Override
   public String toString() {
     return name + " \t"
-      + price.getPrice().toString()
-      + price.getCurrency() + " \t"
+      + servicePrice.getPrice().toString()
+      + servicePrice.getCurrency() + " \t"
       + quantity + " шт";
   }
 }

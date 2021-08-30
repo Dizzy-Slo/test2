@@ -1,9 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.company.TablePageController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml" fx:controller="com.company.TablePageController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <top>
+        <ComboBox fx:id="countriesComboBox" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+                  minWidth="-Infinity">
+            <BorderPane.margin>
+                <Insets bottom="10.0"/>
+            </BorderPane.margin>
+        </ComboBox>
+    </top>
+    <center>
+        <TableView fx:id="servicesTableView" fixedCellSize="0.0" maxHeight="1.7976931348623157E308"
+                   maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+            <columns>
+                <TableColumn fx:id="nameCol" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="190.0"
+                             resizable="false" text="Название">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="name"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="190.0" resizable="false"
+                             text="Цена">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="servicePrice"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="199.0" resizable="false"
+                             text="Количество">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="quantity"/>
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+            <sortOrder>
+                <fx:reference source="nameCol"/>
+            </sortOrder>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+    </center>
+    <bottom>
+        <Button fx:id="mainViewButton" minHeight="-Infinity" minWidth="-Infinity" text="Перейти на главное окно">
+            <BorderPane.margin>
+                <Insets top="10.0"/>
+            </BorderPane.margin>
+        </Button>
+    </bottom>
+</BorderPane>
