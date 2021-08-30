@@ -23,9 +23,8 @@ public class Main extends Application {
         ParserOnlineSim.getLogger().log(Level.WARNING, "Failed to parse OnlineSim");
         AlertShower.showErrorAlert("Не удалось спарсить OnlineSim", null, false);
       } else {
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("MainPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("TablePage.fxml"));
         primaryStage.setScene(new Scene(loader.load()));
-        //primaryStage.setResizable(false);
         primaryStage.show();
       }
     } catch (Exception e) {
@@ -34,7 +33,7 @@ public class Main extends Application {
     }
   }
 
-  public static Map<String, Map<String, ServicePrice>> getParsedCountriesWithServicesMap(){
+  public static Map<String, Map<String, ServicePrice>> getParsedCountriesWithServicesMap() {
     return parsedCountriesWithServicesMap;
   }
 }

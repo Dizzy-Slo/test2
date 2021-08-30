@@ -47,9 +47,9 @@ public class ServicePrice implements Comparable<ServicePrice> {
 
   @Override
   public int compareTo(@NotNull ServicePrice o) {
-    if(currency.equals(o.currency)){
+    if (currency.equals(o.currency)) {
       return price.compareTo(o.price);
-    }else {
+    } else {
       return CurrencyExchanger.comparingCurrency(this, o);
     }
   }

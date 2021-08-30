@@ -113,6 +113,7 @@ public class MainPageController {
   private void updateCountriesWithServicesMap() {
     Task<Void> initializeSortedMapsTask = new Task<Void>() {
       @Override
+      @Nullable
       protected Void call() throws Exception {
         updateButton.setDisable(true);
         findProgressBar.setVisible(true);
