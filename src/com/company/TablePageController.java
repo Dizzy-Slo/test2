@@ -7,7 +7,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 
@@ -45,38 +48,37 @@ public class TablePageController {
       }
     });
 
-    priceCol.setCellValueFactory(param -> {
-      ServicePrice servicePrice = param.getValue().getServicePrice();
-      return new SimpleObjectProperty<>(servicePrice.getPrice().toString());
-    });
+    priceCol.setCellValueFactory(serviceCellData ->
+      new SimpleObjectProperty<>(serviceCellData
+        .getValue()
+        .getServicePrice()
+        .getPrice()
+        .toString()));
 
     priceCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
     priceCol.setOnEditCommit((TableColumn.CellEditEvent<Service, String> event) -> {
-      TablePosition<Service, String> pos = event.getTablePosition();
+      int rowIndex = event.getTablePosition().getRow();
 
       if (event.getNewValue().matches("\\d+[.]?\\d*")) {
         BigDecimal newPrice = new BigDecimal(event.getNewValue());
-
-        int row = pos.getRow();
-        Service person = event.getTableView().getItems().get(row);
+        Service currentService = event.getTableView().getItems().get(rowIndex);
 
         try {
-          person.setServicePrice(newPrice);
+          currentService.setServicePrice(newPrice);
         } catch (DataFormatException e) {
-          e.printStackTrace();
+          showIncorrectAlert(rowIndex, event.getRowValue());
         }
       } else {
-        AlertShower.showErrorAlert("Неправильное значение", "Введите корректное значение вида: dd.dd", false);
-
-        servicesTableView.getItems().set(event.getTablePosition().getRow(), event.getRowValue());
+        showIncorrectAlert(rowIndex, event.getRowValue());
       }
     });
 
-    currencyCol.setCellValueFactory(param -> {
-      ServicePrice servicePrice = param.getValue().getServicePrice();
-      return new SimpleObjectProperty<>(servicePrice.getCurrency());
-    });
+    currencyCol.setCellValueFactory(serviceCellData ->
+      new SimpleObjectProperty<>(serviceCellData
+        .getValue()
+        .getServicePrice()
+        .getCurrency()));
 
     countriesComboBox.getItems().addAll(countriesWithServicesMap.keySet());
     countriesComboBox.setValue(countriesComboBox.getItems().get(0));
@@ -101,5 +103,10 @@ public class TablePageController {
 
   private void getServicesByCountry() {
     servicesTableView.setItems(countriesWithServicesMap.get(countriesComboBox.getValue()));
+  }
+
+  private void showIncorrectAlert(int rowIndex, Service oldValue) {
+    AlertShower.showErrorAlert("Неправильное значение", "Введите корректное положительное значение вида: dd.dd", false);
+    servicesTableView.getItems().set(rowIndex, oldValue);
   }
 }
