@@ -1,5 +1,6 @@
 package currencyExchanger;
 
+import org.jetbrains.annotations.NotNull;
 import org.omg.CORBA.UNKNOWN;
 
 public enum Currency {
@@ -20,7 +21,8 @@ public enum Currency {
     return name;
   }
 
-  public static Currency getBySymbol(String symbol){
+  @NotNull
+  public static Currency getBySymbol(@NotNull String symbol){
     for(Currency currency : Currency.values()){
       for (String currencySymbol : currency.symbols){
         if(currencySymbol.equals(symbol)){

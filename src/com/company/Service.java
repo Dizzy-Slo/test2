@@ -45,7 +45,7 @@ public class Service {
   public String toString() {
     return name + " \t"
       + servicePrice.getPrice().toString()
-      + servicePrice.getCurrency() + " \t"
+      + servicePrice.getCurrencySymbol() + " \t"
       + quantity + " шт";
   }
 }

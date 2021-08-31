@@ -28,7 +28,7 @@ public class CurrencyExchanger {
   }
 
   public static int comparingCurrency(@NotNull ServicePrice service1, @NotNull ServicePrice service2) {
-    if (service1.getCurrency1() != Currency.UNKNOWN && service2.getCurrency1() != Currency.UNKNOWN) {
+    if (service1.getCurrency() != Currency.UNKNOWN && service2.getCurrency() != Currency.UNKNOWN) {
       BigDecimal price1 = priceInUsd(service1);
       BigDecimal price2 = priceInUsd(service2);
 
@@ -36,7 +36,7 @@ public class CurrencyExchanger {
     }
     else {
       AlertShower.showErrorAlert("Неизвестные валюты",
-        "Исключение вызвано сравнением: " + service1.getCurrency() + " и " + service2.getCurrency(),
+        "Исключение вызвано сравнением: " + service1.getCurrencySymbol() + " и " + service2.getCurrencySymbol(),
         true);
       return 0;
     }
@@ -44,8 +44,8 @@ public class CurrencyExchanger {
 
   @NotNull
   public static BigDecimal priceInUsd(@NotNull ServicePrice servicePrice) {
-    BigDecimal d = currencyExchangeRateMap.get("USD" + Objects.requireNonNull(servicePrice.getCurrency1()).getName());
-    return servicePrice.getPrice().divide(d, RoundingMode.CEILING);
+    BigDecimal rate = currencyExchangeRateMap.get("USD" + Objects.requireNonNull(servicePrice.getCurrency()).getName());
+    return servicePrice.getPrice().divide(rate, 10, RoundingMode.HALF_UP);
   }
 
   @NotNull

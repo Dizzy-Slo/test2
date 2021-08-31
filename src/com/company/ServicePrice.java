@@ -10,26 +10,26 @@ import java.util.zip.DataFormatException;
 
 public class ServicePrice implements Comparable<ServicePrice> {
   private BigDecimal price;
-  private final Currency currency1;
-  private final String currency;
+  private final Currency currency;
+  private final String currencySymbol;
 
-  public ServicePrice(@NotNull BigDecimal price, @NotNull String currency) {
+  public ServicePrice(@NotNull BigDecimal price, @NotNull String currencySymbol) {
     this.price = price;
-    this.currency = currency;
-    this.currency1 = Currency.getBySymbol(currency);
+    this.currencySymbol = currencySymbol;
+    this.currency = Currency.getBySymbol(currencySymbol);
   }
 
   public BigDecimal getPrice() {
     return price;
   }
 
-  public String getCurrency() {
-    return currency;
+  public String getCurrencySymbol() {
+    return currencySymbol;
   }
 
   @Nullable
-  public Currency getCurrency1() {
-    return currency1;
+  public Currency getCurrency() {
+    return currency;
   }
 
   public void setPrice(@NotNull BigDecimal newPrice) throws DataFormatException {
@@ -42,12 +42,12 @@ public class ServicePrice implements Comparable<ServicePrice> {
 
   @Override
   public String toString() {
-    return price + currency;
+    return price + currencySymbol;
   }
 
   @Override
   public int compareTo(@NotNull ServicePrice o) {
-    if (currency.equals(o.currency)) {
+    if (currencySymbol.equals(o.currencySymbol)) {
       return price.compareTo(o.price);
     } else {
       return CurrencyExchanger.comparingCurrency(this, o);

@@ -2,6 +2,7 @@ package com.company;
 
 import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,10 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.zip.DataFormatException;
 
 public class TablePageController {
@@ -52,8 +50,23 @@ public class TablePageController {
       new SimpleObjectProperty<>(serviceCellData
         .getValue()
         .getServicePrice()
-        .getPrice()
         .toString()));
+        //.getPrice()
+
+    priceCol.sortTypeProperty().addListener(event ->{
+      if(priceCol.getSortType() == TableColumn.SortType.ASCENDING){
+        List<Service> sortedServices = new LinkedList<>();
+        servicesTableView.getItems().stream().sorted(Comparator.comparing(Service::getServicePrice)).forEach(sortedServices::add);
+        servicesTableView.getItems().clear();
+        servicesTableView.setItems(new ObservableListWrapper<>(sortedServices));
+      }else {
+        List<Service> sortedServices = new LinkedList<>();
+        servicesTableView.getItems().stream().sorted(Comparator.comparing(Service::getServicePrice)).forEach(sortedServices::add);
+        servicesTableView.getItems().clear();
+        Collections.reverse(sortedServices);
+        servicesTableView.setItems(new ObservableListWrapper<>(sortedServices));
+      }
+    });
 
     priceCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
@@ -74,11 +87,11 @@ public class TablePageController {
       }
     });
 
-    currencyCol.setCellValueFactory(serviceCellData ->
+    /*currencyCol.setCellValueFactory(serviceCellData ->
       new SimpleObjectProperty<>(serviceCellData
         .getValue()
         .getServicePrice()
-        .getCurrency()));
+        .getCurrencySymbol()));*/
 
     countriesComboBox.getItems().addAll(countriesWithServicesMap.keySet());
     countriesComboBox.setValue(countriesComboBox.getItems().get(0));

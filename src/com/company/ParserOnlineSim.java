@@ -108,7 +108,7 @@ public class ParserOnlineSim {
       stringBuilder.append("\"").append(country).append("\" : {\n");
       if (servicesWithPricesMap != null) {
         servicesWithPricesMap.forEach((service, priceWithCurrency) -> stringBuilder.append("\t\"").append(service).append("\" : ")
-          .append(priceWithCurrency.getPrice()).append(priceWithCurrency.getCurrency()).append("\n"));
+          .append(priceWithCurrency.getPrice()).append(priceWithCurrency.getCurrencySymbol()).append("\n"));
       }
     });
 
