@@ -50,8 +50,8 @@ public class TablePageController {
       new SimpleObjectProperty<>(serviceCellData
         .getValue()
         .getServicePrice()
+        .getPrice()
         .toString()));
-        //.getPrice()
 
     priceCol.sortTypeProperty().addListener(event ->{
       if(priceCol.getSortType() == TableColumn.SortType.ASCENDING){
@@ -87,11 +87,11 @@ public class TablePageController {
       }
     });
 
-    /*currencyCol.setCellValueFactory(serviceCellData ->
+    currencyCol.setCellValueFactory(serviceCellData ->
       new SimpleObjectProperty<>(serviceCellData
         .getValue()
         .getServicePrice()
-        .getCurrencySymbol()));*/
+        .getCurrencySymbol()));
 
     countriesComboBox.getItems().addAll(countriesWithServicesMap.keySet());
     countriesComboBox.setValue(countriesComboBox.getItems().get(0));
