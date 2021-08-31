@@ -2,7 +2,6 @@ package com.company;
 
 import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,19 +52,19 @@ public class TablePageController {
         .getPrice()
         .toString()));
 
-    priceCol.sortTypeProperty().addListener(event ->{
-      if(priceCol.getSortType() == TableColumn.SortType.ASCENDING){
-        List<Service> sortedServices = new LinkedList<>();
-        servicesTableView.getItems().stream().sorted(Comparator.comparing(Service::getServicePrice)).forEach(sortedServices::add);
-        servicesTableView.getItems().clear();
-        servicesTableView.setItems(new ObservableListWrapper<>(sortedServices));
-      }else {
-        List<Service> sortedServices = new LinkedList<>();
-        servicesTableView.getItems().stream().sorted(Comparator.comparing(Service::getServicePrice)).forEach(sortedServices::add);
-        servicesTableView.getItems().clear();
+    priceCol.sortTypeProperty().addListener(event -> {
+      List<Service> sortedServices = new LinkedList<>();
+      servicesTableView
+        .getItems()
+        .stream()
+        .sorted(Comparator.comparing(Service::getServicePrice))
+        .forEach(sortedServices::add);
+
+      servicesTableView.getItems().clear();
+      if (priceCol.getSortType() == TableColumn.SortType.DESCENDING) {
         Collections.reverse(sortedServices);
-        servicesTableView.setItems(new ObservableListWrapper<>(sortedServices));
       }
+      servicesTableView.setItems(new ObservableListWrapper<>(sortedServices));
     });
 
     priceCol.setCellFactory(TextFieldTableCell.forTableColumn());
