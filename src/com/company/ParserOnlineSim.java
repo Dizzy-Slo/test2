@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import currencyExchanger.Currency;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,8 +80,11 @@ public class ParserOnlineSim {
 
           Matcher matcher = VALIDATION_REGEX.matcher(servicePriceWithCurrency);
           if (matcher.find()) {
-            ServicePrice priceAndCurrency = new ServicePrice(new BigDecimal(matcher.group("price")), matcher.group("currency"));
-            servicePriceMap.put(service, priceAndCurrency);
+            String currencySymbol = Currency.getCorrectCurrencySymbol(matcher.group("currency"));
+            if (currencySymbol != null) {
+              ServicePrice priceAndCurrency = new ServicePrice(new BigDecimal(matcher.group("price")), currencySymbol);
+              servicePriceMap.put(service, priceAndCurrency);
+            }
           }
         }
       }

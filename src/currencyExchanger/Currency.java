@@ -1,12 +1,12 @@
 package currencyExchanger;
 
 import org.jetbrains.annotations.NotNull;
-import org.omg.CORBA.UNKNOWN;
+import org.jetbrains.annotations.Nullable;
 
 public enum Currency {
   USD("USD", new String[]{"$"}),
   EUR("EUR", new String[]{"€"}),
-  RUB("RUB", new String[]{"р", "p", "₽"}),
+  RUB("RUB", new String[]{"₽", "р", "p"}),
   UNKNOWN("UNKNOWN", null);
 
   private final String name;
@@ -31,5 +31,17 @@ public enum Currency {
       }
     }
     return UNKNOWN;
+  }
+
+  @Nullable
+  public static String getCorrectCurrencySymbol(@NotNull String symbol){
+    for(Currency currency : Currency.values()){
+      for (String currencySymbol : currency.symbols){
+        if(currencySymbol.equals(symbol)){
+          return currency.symbols[0];
+        }
+      }
+    }
+    return null;
   }
 }

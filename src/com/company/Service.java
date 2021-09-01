@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Random;
 import java.util.zip.DataFormatException;
 
-public class Service {
+public class Service implements Comparable<Service>{
   private final ServicePrice servicePrice;
   private final String name;
   private int quantity;
@@ -47,5 +47,10 @@ public class Service {
       + servicePrice.getPrice().toString()
       + servicePrice.getCurrencySymbol() + " \t"
       + quantity + " шт";
+  }
+
+  @Override
+  public int compareTo(@NotNull Service o) {
+    return servicePrice.compareTo(o.servicePrice);
   }
 }
