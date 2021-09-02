@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Random;
 import java.util.zip.DataFormatException;
 
-public class Service implements Comparable<Service>{
+public class Service implements Comparable<Service> {
   private final ServicePrice servicePrice;
   private final String name;
   private int quantity;
@@ -17,6 +17,12 @@ public class Service implements Comparable<Service>{
 
     Random random = new Random();
     quantity = random.nextInt(5000);
+  }
+
+  public Service(@NotNull String name, @NotNull ServicePrice price, int quantity) {
+    this.name = name;
+    this.servicePrice = price;
+    this.quantity = quantity;
   }
 
   public String getName() {

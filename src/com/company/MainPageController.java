@@ -13,7 +13,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.DataFormatException;
 
 public class MainPageController {
@@ -41,11 +44,13 @@ public class MainPageController {
   private RadioButton priceDescRadioButton;
 
   private String currentCountry;
-  private Map<String, Map<String, ServicePrice>> currentSortedCountriesWithServicesMap;
+  //private Map<String, Map<String, ServicePrice>> currentSortedCountriesWithServicesMap;
+  private Map<String, List<Service>> currentSortedCountriesWithServicesMap;
   private final ToggleGroup sort = new ToggleGroup();
 
   @FXML
   private void initialize() {
+    //currentSortedCountriesWithServicesMap = Main.getParsedCountriesWithServicesMap();
     currentSortedCountriesWithServicesMap = Main.getParsedCountriesWithServicesMap();
 
     countriesComboBox.getItems().addAll(currentSortedCountriesWithServicesMap.keySet());
@@ -118,7 +123,7 @@ public class MainPageController {
         updateButton.setDisable(true);
         updateProgressBar.setVisible(true);
 
-        currentSortedCountriesWithServicesMap = Main.updateCountryWithServicesMap();
+        currentSortedCountriesWithServicesMap = Main.updateCountryWithServicesMapList();
 
         updateProgressBar.setVisible(false);
         updateButton.setDisable(false);
@@ -141,15 +146,16 @@ public class MainPageController {
 
     if (currentCountry != null) {
       servicesList.clear();
-      Map<String, ServicePrice> servicePriceMap = currentSortedCountriesWithServicesMap.get(currentCountry);
-      List<String> services = new LinkedList<>(servicePriceMap.keySet());
+      //Map<String, ServicePrice> servicePriceMap = currentSortedCountriesWithServicesMap.get(currentCountry);
+      List<Service> services = currentSortedCountriesWithServicesMap.get(currentCountry);/*new LinkedList<>(servicePriceMap.keySet());*/
 
       if (!ascSort) {
         Collections.reverse(services);
       }
-      for (String service : services) {
+      servicesList.addAll(services);
+      /*for (String service : services) {
         servicesList.add(new Service(service, servicePriceMap.get(service)));
-      }
+      }*/
 
       servicesComboBox.setValue(servicesList.get(0));
     }
@@ -205,14 +211,16 @@ public class MainPageController {
 
   private void changeCurrentSort(@NotNull String inputCountry, boolean byName, boolean ascSort) {
     if (byName) {
-      sortCountryServicesByName(inputCountry);
+      currentSortedCountriesWithServicesMap.get(inputCountry).sort(Comparator.comparing(Service::getName));
+      //sortCountryServicesByName(inputCountry);
     } else {
-      sortCountryServicesByPrice(inputCountry);
+      currentSortedCountriesWithServicesMap.get(inputCountry).sort(Comparator.comparing(Service::getServicePrice));
+      //sortCountryServicesByPrice(inputCountry);
     }
     setServicesComboBox(ascSort);
   }
 
-  private void sortCountryServicesByPrice(@NotNull String inputCountry) {
+ /* private void sortCountryServicesByPrice(@NotNull String inputCountry) {
     Map<String, ServicePrice> sortedServicesMap = new LinkedHashMap<>();
     currentSortedCountriesWithServicesMap.get(inputCountry)
       .entrySet()
@@ -222,6 +230,8 @@ public class MainPageController {
 
     currentSortedCountriesWithServicesMap.remove(inputCountry);
     currentSortedCountriesWithServicesMap.put(inputCountry, sortedServicesMap);
+
+    currentSortedCountriesWithServicesMapList.get(inputCountry).sort(Comparator.comparing(Service::getServicePrice));
   }
 
   private void sortCountryServicesByName(@NotNull String inputCountry) {
@@ -234,6 +244,8 @@ public class MainPageController {
 
     currentSortedCountriesWithServicesMap.remove(inputCountry);
     currentSortedCountriesWithServicesMap.put(inputCountry, sortedServicesMap);
-  }
+
+    currentSortedCountriesWithServicesMapList.get(inputCountry).sort(Comparator.comparing(Service::getName));
+  }*/
 }
 

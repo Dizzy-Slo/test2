@@ -11,9 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -22,6 +20,7 @@ import java.util.regex.Pattern;
 
 public class ParserOnlineSim {
   private static Map<String, Map<String, ServicePrice>> countriesWithServicesMap;
+  private static Map<String, List<Service>> countriesWithServicesMapList;
   private static String countriesWithServicesJsonString;
   private static Logger logger;
 
@@ -89,6 +88,48 @@ public class ParserOnlineSim {
         }
       }
       countriesWithServicesMap.put(countriesJson.get(countryNumber).getAsString(), servicePriceMap);
+    }
+    return countriesWithServicesMap;
+  }
+
+  @Nullable
+  public static Map<String, List<Service>> parseMapList(boolean saveToFile) throws Exception {
+    JsonObject parsedJSON = getJsonDataFromSite();
+
+    countriesWithServicesMapList = getCountriesWithServicesMapListFromJson(parsedJSON.get("list").getAsJsonObject(),
+      parsedJSON.get("text").getAsJsonObject());
+
+    if (saveToFile) writeToFile();
+
+    countriesWithServicesJsonString = new Gson().toJson(countriesWithServicesMapList);
+    return countriesWithServicesMapList;
+  }
+
+  @NotNull
+  private static Map<String, List<Service>> getCountriesWithServicesMapListFromJson(@NotNull JsonObject servicesJson,
+                                                                                    @NotNull JsonObject countriesJson) {
+    Map<String, List<Service>> countriesWithServicesMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    for (String countryNumber : countriesJson.keySet()) {
+      List<Service> servicePriceList = new LinkedList<>();
+      JsonElement country = servicesJson.get(countryNumber.replaceAll("country_", ""));
+
+      if (country != null) {
+        JsonObject servicePrice = country.getAsJsonObject();
+
+        for (String service : servicePrice.keySet()) {
+          String servicePriceWithCurrency = servicePrice.get(service).getAsString();
+
+          Matcher matcher = VALIDATION_REGEX.matcher(servicePriceWithCurrency);
+          if (matcher.find()) {
+            String currencySymbol = Currency.getCorrectCurrencySymbol(matcher.group("currency"));
+            if (currencySymbol != null) {
+              ServicePrice priceAndCurrency = new ServicePrice(new BigDecimal(matcher.group("price")), currencySymbol);
+              servicePriceList.add(new Service(service, priceAndCurrency));
+            }
+          }
+        }
+      }
+      countriesWithServicesMap.put(countriesJson.get(countryNumber).getAsString(), servicePriceList);
     }
     return countriesWithServicesMap;
   }

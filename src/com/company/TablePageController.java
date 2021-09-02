@@ -54,6 +54,8 @@ public class TablePageController {
     countriesComboBox.setValue(countriesList.get(0));
     getServicesByCountry();
 
+    servicesTableView.getSortOrder().add(nameCol);
+
     mainViewButton.setOnAction(event -> {
       ((Node) (event.getSource())).getScene().getWindow().hide();
 
@@ -78,7 +80,7 @@ public class TablePageController {
         updateButton.setDisable(true);
         updateProgressBar.setVisible(true);
 
-        setCountriesWithServicesMap(Main.updateCountryWithServicesMap());
+        setCountriesWithServicesMap(Main.updateCountryWithServicesMapList());
         getServicesByCountry();
 
         updateProgressBar.setVisible(false);
@@ -91,7 +93,7 @@ public class TablePageController {
     new Thread(initializeSortedMapsTask).start();
   }
 
-  private void setCountriesWithServicesMap(@NotNull Map<String, Map<String, ServicePrice>> newCountriesWithServicesMap) {
+  /*private void setCountriesWithServicesMap(@NotNull Map<String, Map<String, ServicePrice>> newCountriesWithServicesMap) {
     countriesWithServicesMap.clear();
     newCountriesWithServicesMap.forEach((country, services) -> {
       List<Service> servicesList = new LinkedList<>();
@@ -100,6 +102,21 @@ public class TablePageController {
           String serviceName = service.substring(0, 1).toUpperCase(Locale.ROOT) + service.substring(1);
 
           servicesList.add(new Service(serviceName, price));
+        });
+        countriesWithServicesMap.put(country, new ObservableListWrapper<>(servicesList));
+      }
+    });
+  }*/
+
+  private void setCountriesWithServicesMap(@NotNull Map<String, List<Service>> newCountriesWithServicesMap) {
+    countriesWithServicesMap.clear();
+    newCountriesWithServicesMap.forEach((country, services) -> {
+      List<Service> servicesList = new LinkedList<>();
+      if (services != null) {
+        services.forEach(service -> {
+          String serviceName = service.getName().substring(0, 1).toUpperCase(Locale.ROOT) + service.getName().substring(1);
+
+          servicesList.add(new Service(serviceName, service.getServicePrice(), service.getQuantity()));
         });
         countriesWithServicesMap.put(country, new ObservableListWrapper<>(servicesList));
       }
