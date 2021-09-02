@@ -62,8 +62,6 @@ public class TablePageController {
     getServicesByCountry();
 
     mainViewButton.setOnAction(event -> {
-
-
       ((Node) (event.getSource())).getScene().getWindow().hide();
 
       FXMLLoader loader = new FXMLLoader(getClass().getResource("MainPage.fxml"));
