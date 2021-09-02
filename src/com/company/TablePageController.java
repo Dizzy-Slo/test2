@@ -54,8 +54,6 @@ public class TablePageController {
     countriesComboBox.setValue(countriesList.get(0));
     getServicesByCountry();
 
-    servicesTableView.getSortOrder().add(nameCol);
-
     mainViewButton.setOnAction(event -> {
       ((Node) (event.getSource())).getScene().getWindow().hide();
 
@@ -125,5 +123,6 @@ public class TablePageController {
 
   private void getServicesByCountry() {
     servicesTableView.setItems(countriesWithServicesMap.get(countriesComboBox.getValue()));
+    servicesTableView.getSortOrder().add(nameCol);
   }
 }
