@@ -52,7 +52,7 @@
                     <Insets right="10.0"/>
                 </GridPane.margin>
             </Button>
-            <ProgressBar fx:id="findProgressBar" maxWidth="1.7976931348623157E308" visible="false"
+            <ProgressBar fx:id="updateProgressBar" maxWidth="1.7976931348623157E308" visible="false"
                          GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
             <Button maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#setPrice" text="Изменить цену"

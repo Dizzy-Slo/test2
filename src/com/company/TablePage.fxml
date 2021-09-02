@@ -3,9 +3,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.*?>
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-            minWidth="-Infinity" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.company.TablePageController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
@@ -43,10 +43,19 @@
         </TableView>
     </center>
     <bottom>
-        <Button fx:id="mainViewButton" minHeight="-Infinity" minWidth="-Infinity" text="Перейти на главное окно">
+        <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+              minHeight="-Infinity" minWidth="-Infinity" spacing="10">
+            <Button fx:id="mainViewButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                    minHeight="-Infinity" minWidth="-Infinity" text="Перейти на главное окно" HBox.hgrow="SOMETIMES">
+            </Button>
+            <Button fx:id="updateButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                    minHeight="-Infinity" minWidth="-Infinity" text="Обновить данные" HBox.hgrow="SOMETIMES"
+                    onAction="#updateServices"/>
+            <ProgressBar fx:id="updateProgressBar" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+                         minWidth="-Infinity" visible="false" HBox.hgrow="SOMETIMES"/>
             <BorderPane.margin>
                 <Insets top="10.0"/>
             </BorderPane.margin>
-        </Button>
+        </HBox>
     </bottom>
 </BorderPane>

@@ -55,6 +55,7 @@ public class PriceCell extends TableCell<Service, ServicePrice> {
 
   @Override
   public void commitEdit(@NotNull ServicePrice newValue) {
+    super.commitEdit(newValue);
     int rowIndex = getTableRow().getIndex();
     Service currentService = getTableView().getItems().get(rowIndex);
     try {

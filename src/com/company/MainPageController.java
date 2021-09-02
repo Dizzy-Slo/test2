@@ -26,7 +26,7 @@ public class MainPageController {
   @FXML
   private ComboBox<String> countriesComboBox;
   @FXML
-  private ProgressBar findProgressBar;
+  private ProgressBar updateProgressBar;
   @FXML
   private Button updateButton;
   @FXML
@@ -116,11 +116,12 @@ public class MainPageController {
       @Nullable
       protected Void call() throws Exception {
         updateButton.setDisable(true);
-        findProgressBar.setVisible(true);
+        updateProgressBar.setVisible(true);
 
-        currentSortedCountriesWithServicesMap = ParserOnlineSim.parse(false);
+        //currentSortedCountriesWithServicesMap = ParserOnlineSim.parse(false);
+        currentSortedCountriesWithServicesMap = Main.updateCountryWithServicesMap();
 
-        findProgressBar.setVisible(false);
+        updateProgressBar.setVisible(false);
         updateButton.setDisable(false);
 
         Platform.runLater(() -> {
@@ -131,7 +132,7 @@ public class MainPageController {
       }
     };
 
-    findProgressBar.progressProperty().bind(initializeSortedMapsTask.progressProperty());
+    updateProgressBar.progressProperty().bind(initializeSortedMapsTask.progressProperty());
     new Thread(initializeSortedMapsTask).start();
   }
 

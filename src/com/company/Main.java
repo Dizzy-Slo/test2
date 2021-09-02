@@ -19,7 +19,7 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) {
     try {
-      parsedCountriesWithServicesMap = ParserOnlineSim.parse(false);
+      parsedCountriesWithServicesMap = updateCountryWithServicesMap();
       parsedCountriesWithServicesMap.get("Австрия").put("2Erety", new ServicePrice(new BigDecimal("2"), "$"));
       parsedCountriesWithServicesMap.get("Австрия").put("1Erety", new ServicePrice(new BigDecimal("1"), "$"));
       parsedCountriesWithServicesMap.get("Австрия").put("5Erety", new ServicePrice(new BigDecimal("5"), "$"));
@@ -38,6 +38,11 @@ public class Main extends Application {
   }
 
   public static Map<String, Map<String, ServicePrice>> getParsedCountriesWithServicesMap() {
+    return parsedCountriesWithServicesMap;
+  }
+
+  public static Map<String, Map<String, ServicePrice>> updateCountryWithServicesMap() throws Exception {
+    parsedCountriesWithServicesMap = ParserOnlineSim.parse(false);
     return parsedCountriesWithServicesMap;
   }
 }
