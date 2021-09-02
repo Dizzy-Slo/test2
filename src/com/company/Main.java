@@ -23,10 +23,7 @@ public class Main extends Application {
       parsedCountriesWithServicesMap.get("Австрия").put("2Erety", new ServicePrice(new BigDecimal("2"), "$"));
       parsedCountriesWithServicesMap.get("Австрия").put("1Erety", new ServicePrice(new BigDecimal("1"), "$"));
       parsedCountriesWithServicesMap.get("Австрия").put("5Erety", new ServicePrice(new BigDecimal("5"), "$"));
-      if (parsedCountriesWithServicesMap == null) {
-        ParserOnlineSim.getLogger().log(Level.WARNING, "Failed to parse OnlineSim");
-        AlertShower.showErrorAlert("Не удалось спарсить OnlineSim", null, false);
-      } else {
+      if (parsedCountriesWithServicesMap != null) {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("TablePage.fxml"));
         primaryStage.setScene(new Scene(loader.load()));
         primaryStage.show();
@@ -41,8 +38,13 @@ public class Main extends Application {
     return parsedCountriesWithServicesMap;
   }
 
-  public static Map<String, Map<String, ServicePrice>> updateCountryWithServicesMap() throws Exception {
-    parsedCountriesWithServicesMap = ParserOnlineSim.parse(false);
+  public static Map<String, Map<String, ServicePrice>> updateCountryWithServicesMap() {
+    try {
+      parsedCountriesWithServicesMap = ParserOnlineSim.parse(false);
+    } catch (Exception e) {
+      ParserOnlineSim.getLogger().log(Level.WARNING, "Failed to parse OnlineSim");
+      AlertShower.showErrorAlert("Не удалось спарсить OnlineSim", null, false);
+    }
     return parsedCountriesWithServicesMap;
   }
 }

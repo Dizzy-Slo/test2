@@ -114,11 +114,10 @@ public class MainPageController {
     Task<Void> initializeSortedMapsTask = new Task<Void>() {
       @Override
       @Nullable
-      protected Void call() throws Exception {
+      protected Void call() {
         updateButton.setDisable(true);
         updateProgressBar.setVisible(true);
 
-        //currentSortedCountriesWithServicesMap = ParserOnlineSim.parse(false);
         currentSortedCountriesWithServicesMap = Main.updateCountryWithServicesMap();
 
         updateProgressBar.setVisible(false);
