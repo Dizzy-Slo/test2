@@ -28,7 +28,8 @@ public class Main extends Application {
       parsedCountriesWithServicesMap.get("Австрия").add(new Service("5Erety", new ServicePrice(new BigDecimal("5"), "$")));
       if (parsedCountriesWithServicesMap != null) {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("TablePage.fxml"));
-        primaryStage.setScene(new Scene(loader.load()));
+        Scene scene = new Scene(loader.load());
+        primaryStage.setScene(scene);
         primaryStage.show();
       }
     } catch (Exception e) {

@@ -682,3 +682,13 @@ WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runti
 WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
 сен 02, 2021 12:57:12 PM javafx.fxml.FXMLLoader$ValueElement processValue
 WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
+сен 03, 2021 11:51:36 AM com.sun.javafx.css.StyleManager loadStylesheetUnPrivileged
+WARNING: Resource "HighlightRowStyle.css" not found.
+сен 06, 2021 8:54:23 AM com.sun.javafx.css.StyleManager loadStylesheetUnPrivileged
+WARNING: Resource "com/company/HighlightRowStyle.css" not found.
+сен 06, 2021 9:50:46 AM com.sun.javafx.css.StyleManager loadStylesheetUnPrivileged
+WARNING: Resource "com/company/HighlightRowStyle.css" not found.
+сен 06, 2021 2:55:33 PM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
+сен 06, 2021 3:11:58 PM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301

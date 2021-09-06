@@ -36,6 +36,7 @@ public class ParserOnlineSim {
     }
   }
 
+  @Nullable
   public static Logger getLogger() {
     return logger;
   }

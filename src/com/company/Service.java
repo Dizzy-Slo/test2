@@ -25,10 +25,12 @@ public class Service implements Comparable<Service> {
     this.quantity = quantity;
   }
 
+  @NotNull
   public String getName() {
     return name;
   }
 
+  @NotNull
   public ServicePrice getServicePrice() {
     return servicePrice;
   }
@@ -50,7 +52,7 @@ public class Service implements Comparable<Service> {
   @Override
   public String toString() {
     return name + " \t"
-      + servicePrice.getPrice().toString()
+      + servicePrice.getPrice()
       + servicePrice.getCurrencySymbol() + " \t"
       + quantity + " шт";
   }

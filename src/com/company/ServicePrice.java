@@ -19,10 +19,12 @@ public class ServicePrice implements Comparable<ServicePrice> {
     this.currency = Currency.getBySymbol(currencySymbol);
   }
 
+  @NotNull
   public BigDecimal getPrice() {
     return price;
   }
 
+  @NotNull
   public String getCurrencySymbol() {
     return currencySymbol;
   }
