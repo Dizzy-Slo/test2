@@ -7,8 +7,8 @@ import java.sql.*;
 import java.util.*;
 
 public class AgentDiscrepancyCalculator {
-  private final static String USER = "handjian";
-  private final static String PASSWORD = "xozQhmfF7YEXIgxW&";
+  private final static String USER = "";
+  private final static String PASSWORD = "";
   private final static String DATABASE_URL = "jdbc:mysql://88.99.239.234/smshub";
 
   private Connection connection;
@@ -64,6 +64,7 @@ public class AgentDiscrepancyCalculator {
         "ON agent.id = agentTransactionStats.agentId " +
         "GROUP BY `agentId`");
     ResultSet resultSet = ps.executeQuery();
+
     while (resultSet.next()) {
       agentMap.put(resultSet.getInt("agentId"), new Agent(resultSet));
     }
@@ -74,6 +75,7 @@ public class AgentDiscrepancyCalculator {
         "WHERE createDate > CURRENT_DATE " +
         "GROUP by agentId");
     resultSet = ps.executeQuery();
+
     while (resultSet.next()) {
       int agentId = resultSet.getInt("agentId");
 
