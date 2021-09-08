@@ -3,90 +3,113 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<BorderPane maxHeight="300" maxWidth="500" prefHeight="310.0" prefWidth="496.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.MainPageController">
+<?import javafx.scene.text.Font?>
+<BorderPane maxHeight="800.0" maxWidth="800.0" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml" fx:controller="com.company.MainPageController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
-    <center>
-        <GridPane alignment="CENTER_LEFT" maxHeight="300" maxWidth="500" BorderPane.alignment="TOP_LEFT">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="228.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="228.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <Label minWidth="-Infinity" text="Введите страну:" />
-            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1">
-                <TextField fx:id="countryTextField" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="99.0" HBox.hgrow="ALWAYS">
-                    <HBox.margin>
-                        <Insets right="10.0" />
-                    </HBox.margin>
-                </TextField>
-                <ComboBox fx:id="countriesComboBox" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-            </HBox>
-
-            <Label minWidth="-Infinity" text="Сервисы:" GridPane.rowIndex="1" />
-            <ComboBox fx:id="servicesComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-            <Button fx:id="updateButton" maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#updateCountriesWithServicesMap" text="Обновить данные" GridPane.rowIndex="2">
-                <GridPane.margin>
-                    <Insets right="10.0" />
-                </GridPane.margin>
-            </Button>
-            <ProgressBar fx:id="updateProgressBar" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-            <Button maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#setPrice" text="Изменить цену" GridPane.rowIndex="3">
-                <GridPane.margin>
-                    <Insets right="10.0" />
-                </GridPane.margin>
-            </Button>
-            <TextField fx:id="setPriceTextField" onAction="#setPrice" promptText="Введите цену" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Отсортировать сервисы по названию:" GridPane.rowIndex="4">
-                <GridPane.margin>
-                    <Insets right="10.0" />
-                </GridPane.margin>
-            </Label>
-            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                <RadioButton fx:id="nameAscRadioButton" text="↑" userData="nameAsc" />
-                <RadioButton fx:id="nameDescRadioButton" text="↓" userData="nameDesc" />
-                <GridPane.margin>
-                    <Insets />
-                </GridPane.margin>
-                <padding>
-                    <Insets left="10.0" />
-                </padding>
-            </HBox>
-
-            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Отсортировать сервисы по цене:" GridPane.rowIndex="5">
-                <GridPane.margin>
-                    <Insets right="10.0" />
-                </GridPane.margin>
-            </Label>
-            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                <RadioButton fx:id="priceAscRadioButton" text="↑" userData="priceAsc" />
-                <RadioButton fx:id="priceDescRadioButton" text="↓" userData="priceDesc" />
-                <GridPane.margin>
-                    <Insets />
-                </GridPane.margin>
-                <padding>
-                    <Insets left="10.0" />
-                </padding>
-            </HBox>
-        </GridPane>
-    </center>
     <bottom>
-        <Button fx:id="tableViewButton" minHeight="-Infinity" minWidth="-Infinity" text="Открыть табличное представление">
+        <Button fx:id="tableViewButton" minHeight="-Infinity" minWidth="-Infinity"
+                text="Открыть табличное представление">
             <BorderPane.margin>
-                <Insets top="10.0" />
+                <Insets top="10.0"/>
             </BorderPane.margin>
         </Button>
     </bottom>
+    <center>
+        <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <top>
+                <GridPane alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1000" minWidth="-Infinity"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1000" minWidth="-Infinity"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER"
+                                        vgrow="SOMETIMES"/>
+                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER"
+                                        vgrow="SOMETIMES"/>
+                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER"
+                                        vgrow="SOMETIMES"/>
+                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER"
+                                        vgrow="SOMETIMES"/>
+                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER"
+                                        vgrow="SOMETIMES"/>
+                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER"
+                                        vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <Label minWidth="-Infinity" text="Введите страну:"/>
+                    <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1">
+                        <TextField fx:id="countryTextField" maxWidth="1.7976931348623157E308" prefHeight="25.0"
+                                   prefWidth="99.0" HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets right="10.0"/>
+                            </HBox.margin>
+                        </TextField>
+                        <ComboBox fx:id="countriesComboBox" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+
+                    <Label minWidth="-Infinity" text="Сервисы:" GridPane.rowIndex="1"/>
+                    <ComboBox fx:id="servicesComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
+                              GridPane.rowIndex="1"/>
+
+                    <Button fx:id="updateButton" maxWidth="1.7976931348623157E308" minWidth="-Infinity"
+                            onAction="#updateCountriesWithServicesMap" text="Обновить данные" GridPane.rowIndex="2">
+                        <GridPane.margin>
+                            <Insets right="10.0"/>
+                        </GridPane.margin>
+                    </Button>
+                    <ProgressBar fx:id="updateProgressBar" maxWidth="1.7976931348623157E308" visible="false"
+                                 GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                    <Button maxWidth="1.7976931348623157E308" minWidth="-Infinity" onAction="#setPrice"
+                            text="Изменить цену" GridPane.rowIndex="3">
+                        <GridPane.margin>
+                            <Insets right="10.0"/>
+                        </GridPane.margin>
+                    </Button>
+                    <TextField fx:id="setPriceTextField" onAction="#setPrice" promptText="Введите цену"
+                               GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                    <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                           text="Отсортировать сервисы по названию:" GridPane.rowIndex="4">
+                        <GridPane.margin>
+                            <Insets right="10.0"/>
+                        </GridPane.margin>
+                        <font>
+                            <Font size="30.0"/>
+                        </font>
+                    </Label>
+                    <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <RadioButton fx:id="nameAscRadioButton" text="↑" userData="nameAsc"/>
+                        <RadioButton fx:id="nameDescRadioButton" text="↓" userData="nameDesc"/>
+                        <GridPane.margin>
+                            <Insets/>
+                        </GridPane.margin>
+                        <padding>
+                            <Insets left="10.0"/>
+                        </padding>
+                    </HBox>
+
+                    <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                           text="Отсортировать сервисы по цене:" GridPane.rowIndex="5">
+                        <GridPane.margin>
+                            <Insets right="10.0"/>
+                        </GridPane.margin>
+                    </Label>
+                    <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <RadioButton fx:id="priceAscRadioButton" text="↑" userData="priceAsc"/>
+                        <RadioButton fx:id="priceDescRadioButton" text="↓" userData="priceDesc"/>
+                        <GridPane.margin>
+                            <Insets/>
+                        </GridPane.margin>
+                        <padding>
+                            <Insets left="10.0"/>
+                        </padding>
+                    </HBox>
+                </GridPane>
+            </top>
+        </BorderPane>
+    </center>
 </BorderPane>

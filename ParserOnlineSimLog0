@@ -1,26 +1,26 @@
-авг 20, 2021 11:33:53 AM com.company.Main main
+авг 20, 2021 11:33:53 AM com.company.AgentDiscrepancyMain main
 WARNING: Can't parse OnlineSim
 авг 20, 2021 3:54:46 PM javafx.fxml.FXMLLoader$ValueElement processValue
 WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
 авг 20, 2021 4:03:36 PM javafx.fxml.FXMLLoader$ValueElement processValue
 WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
-авг 21, 2021 6:53:17 PM com.company.Main start
+авг 21, 2021 6:53:17 PM com.company.AgentDiscrepancyMain start
 WARNING: Can't parse OnlineSim
-авг 21, 2021 8:55:05 PM com.company.Main start
+авг 21, 2021 8:55:05 PM com.company.AgentDiscrepancyMain start
 WARNING: Can't parse OnlineSim
-авг 21, 2021 8:55:45 PM com.company.Main start
+авг 21, 2021 8:55:45 PM com.company.AgentDiscrepancyMain start
 WARNING: Can't parse OnlineSim
-авг 21, 2021 9:43:16 PM com.company.Main start
+авг 21, 2021 9:43:16 PM com.company.AgentDiscrepancyMain start
 WARNING: Can't parse OnlineSim
-авг 21, 2021 9:43:55 PM com.company.Main start
+авг 21, 2021 9:43:55 PM com.company.AgentDiscrepancyMain start
 WARNING: Can't parse OnlineSim
-авг 21, 2021 9:46:16 PM com.company.Main start
+авг 21, 2021 9:46:16 PM com.company.AgentDiscrepancyMain start
 WARNING: Failed to parse OnlineSim
-авг 21, 2021 10:14:55 PM com.company.Main start
+авг 21, 2021 10:14:55 PM com.company.AgentDiscrepancyMain start
 WARNING: Failed to parse OnlineSim
-авг 21, 2021 10:18:50 PM com.company.Main start
+авг 21, 2021 10:18:50 PM com.company.AgentDiscrepancyMain start
 WARNING: Failed to parse OnlineSim
-авг 22, 2021 10:51:47 AM com.company.Main start
+авг 22, 2021 10:51:47 AM com.company.AgentDiscrepancyMain start
 WARNING: Failed to parse OnlineSim
 авг 24, 2021 9:48:27 AM javafx.fxml.FXMLLoader$ValueElement processValue
 WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
@@ -691,4 +691,20 @@ WARNING: Resource "com/company/HighlightRowStyle.css" not found.
 сен 06, 2021 2:55:33 PM javafx.fxml.FXMLLoader$ValueElement processValue
 WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
 сен 06, 2021 3:11:58 PM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
+сен 06, 2021 3:12:56 PM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
+сен 06, 2021 3:13:38 PM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
+сен 06, 2021 3:14:17 PM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
+сен 06, 2021 3:17:13 PM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
+сен 06, 2021 3:18:08 PM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
+сен 06, 2021 3:19:50 PM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
+сен 08, 2021 9:53:04 AM javafx.fxml.FXMLLoader$ValueElement processValue
+WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
+сен 08, 2021 2:22:38 PM javafx.fxml.FXMLLoader$ValueElement processValue
 WARNING: Loading FXML document with JavaFX API of version 11.0.2 by JavaFX runtime of version 8.0.301
