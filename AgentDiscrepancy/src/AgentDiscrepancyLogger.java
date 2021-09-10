@@ -15,7 +15,7 @@ public class AgentDiscrepancyLogger {
     }
   }
 
-  public static void log(String message, String exception) {
-    logger.log(Level.WARNING, message + "\nИсключение:\n" + exception);
+  public static void log(String message, Exception exception) {
+    logger.log(Level.WARNING, message, exception);
   }
 }
