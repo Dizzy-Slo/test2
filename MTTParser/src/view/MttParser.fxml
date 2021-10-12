@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="496.0" prefWidth="1239.0"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="view.MttParserController">
+    <padding>
+        <Insets topRightBottomLeft="10"/>
+    </padding>
+    <center>
+        <SplitPane fx:id="discrepancySplitPane" disable="true" dividerPositions="0.29797979797979796"
+                   maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+                        minWidth="-Infinity">
+                <ListView fx:id="dateListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                          AnchorPane.topAnchor="0.0"/>
+            </AnchorPane>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+                        minWidth="-Infinity">
+                <SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                           AnchorPane.topAnchor="0.0">
+                    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                        <TableView fx:id="discrepancySmsTableView" maxHeight="1.7976931348623157E308"
+                                   maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0"
+                                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <columns>
+                                <TableColumn fx:id="smsPhoneColumn" prefWidth="153.0" text="Номер"/>
+                                <TableColumn fx:id="smsDatabaseColumn" prefWidth="96.0" text="Смс в базе"/>
+                                <TableColumn fx:id="smsMttColumn" minWidth="0.0" prefWidth="140.0"
+                                             text="Смс в отчете mtt"/>
+                            </columns>
+                        </TableView>
+                    </AnchorPane>
+                    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                        <TableView fx:id="discrepancySecTableView" maxHeight="1.7976931348623157E308"
+                                   maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0"
+                                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <columns>
+                                <TableColumn fx:id="secPhoneColumn" prefWidth="153.0" text="Номер"/>
+                                <TableColumn fx:id="secDatabaseColumn" minWidth="6.0" prefWidth="96.0"
+                                             text="Секунд в базе"/>
+                                <TableColumn fx:id="secMttColumn" prefWidth="142.0" text="Секунд в отчете mtt"/>
+                            </columns>
+                        </TableView>
+                    </AnchorPane>
+                </SplitPane>
+            </AnchorPane>
+        </SplitPane>
+    </center>
+    <top>
+        <BorderPane BorderPane.alignment="CENTER">
+            <right>
+                <VBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
+                    <Label fx:id="totalSmsLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                        <font>
+                            <Font size="16.0"/>
+                        </font>
+                    </Label>
+                    <Label fx:id="totalSecLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                        <font>
+                            <Font size="16.0"/>
+                        </font>
+                    </Label>
+                </VBox>
+            </right>
+            <left>
+                <HBox spacing="10.0" BorderPane.alignment="CENTER">
+                    <VBox>
+                        <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308"
+                              maxWidth="1.7976931348623157E308" spacing="10.0">
+                            <VBox.margin>
+                                <Insets bottom="10.0"/>
+                            </VBox.margin>
+                            <Button fx:id="loadDetailMttFileButton" maxHeight="1.7976931348623157E308"
+                                    maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                    text="Загрузить детальный отчет" HBox.hgrow="ALWAYS">
+                                <HBox.margin>
+                                    <Insets/>
+                                </HBox.margin>
+                            </Button>
+                            <ProgressIndicator fx:id="detailLoadProgressIndicator" prefHeight="26.0" prefWidth="26.0"
+                                               visible="false">
+                                <HBox.margin>
+                                    <Insets/>
+                                </HBox.margin>
+                            </ProgressIndicator>
+                        </HBox>
+                        <HBox spacing="10.0">
+                            <VBox.margin>
+                                <Insets bottom="10.0"/>
+                            </VBox.margin>
+                            <Button fx:id="loadTotalMttFileButton" maxHeight="1.7976931348623157E308"
+                                    maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                    text="Загрузить глобальный отчет " HBox.hgrow="ALWAYS">
+                                <HBox.margin>
+                                    <Insets/>
+                                </HBox.margin>
+                            </Button>
+                            <ProgressIndicator fx:id="totalLoadProgressIndicator" prefHeight="26.0" prefWidth="26.0"
+                                               visible="false">
+                                <HBox.margin>
+                                    <Insets/>
+                                </HBox.margin>
+                            </ProgressIndicator>
+                        </HBox>
+                    </VBox>
+                    <VBox spacing="10.0">
+                        <Button fx:id="openTotalDiscrepancyByDaysButton" disable="true"
+                                maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                                mnemonicParsing="false" text="Показать расхождения по дням"/>
+                        <Button fx:id="dumpButton" disable="true" maxHeight="1.7976931348623157E308"
+                                maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Сброс"/>
+                    </VBox>
+                    <VBox spacing="10.0">
+                        <Button fx:id="writePhoneSecQuantityButton" maxHeight="1.7976931348623157E308"
+                                maxWidth="1.7976931348623157E308" mnemonicParsing="false" disable="true"
+                                text="Выгрузить выбранные по секундам"/>
+                        <Button fx:id="writePhoneSmsQuantityButton" maxHeight="1.7976931348623157E308"
+                                maxWidth="1.7976931348623157E308" mnemonicParsing="false" disable="true"
+                                text="Выгрузить выбранные по смс"/>
+                    </VBox>
+                    <VBox spacing="10.0">
+                        <Button fx:id="writeAllDiscrepanciesButton" disable="true" maxHeight="1.7976931348623157E308"
+                                maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Выгрузить все"/>
+                        <Button fx:id="writeTotalDiscrepancyButton" disable="true" maxHeight="1.7976931348623157E308"
+                                maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                text="Выгрузить разницу по дням"/>
+                    </VBox>
+                    <VBox>
+                        <Button fx:id="writeSelectedDayButton" mnemonicParsing="false" disable="true"
+                                text="Выгрузить выбранный день"/>
+                    </VBox>
+                </HBox>
+            </left>
+        </BorderPane>
+    </top>
+</BorderPane>
