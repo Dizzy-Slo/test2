@@ -26,13 +26,6 @@ public class QuantityComparator {
         phoneSet = databaseQuantitiesMap.get(date).keySet();
       } else {
         phoneSet = new TreeSet<>(mttQuantitiesMap.get(date).keySet());
-        /*int k = 0;
-        for (Long phone : databaseQuantitiesMap.get(date).keySet()) {
-
-          if(!phoneSet.contains(phone)) {
-            System.out.println(date + " номер: " + phone + "\n всего: " + ++k);
-          }
-        }*/
         phoneSet.addAll(databaseQuantitiesMap.get(date).keySet());
       }
 
